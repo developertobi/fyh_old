@@ -15,6 +15,10 @@ dependencies:
   flip_card: ^0.4.4
   auto_size_text: ^2.1.0
   animated_text_kit: ^2.2.0
+  flutter_icons: ^1.1.0
+  sensors: ^0.4.2+2
+  tilt_action: ^0.1.0
+  provider: ^4.1.3
 
   cupertino_icons: ^0.1.3
 

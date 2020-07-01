@@ -34,5 +34,3 @@ class CategoryDecks extends StatelessWidget {
     );
   }
 }
-
-

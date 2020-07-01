@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:naija_charades/screens/game_screen.dart';
 
 class DeckInfo extends StatelessWidget {
@@ -27,10 +26,8 @@ class DeckInfo extends StatelessWidget {
             RaisedButton(
                 child: Text('Play'),
                 onPressed: () {
+                  // TODO: use args
                   Navigator.of(context).pushNamed(GameScreen.routeName);
-                  SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.landscapeRight,
-                  ]);
                 })
           ],
         )
