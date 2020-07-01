@@ -1,32 +1,44 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:naija_charades/providers/answers.dart';
-import 'package:provider/provider.dart';
 
 class Word extends StatelessWidget {
+  final String answer;
+  final int timeLeft;
+  final bool isLast5Seconds;
+
+  const Word({
+    @required this.answer,
+    @required this.timeLeft,
+    this.isLast5Seconds = false,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<Answers>(
-      builder: (context, answers, child) {
-        List words = answers.words;
-        int i = Random().nextInt(words.length);
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              words[i],
-              style: TextStyle(fontSize: 50),
-            ),
-            SizedBox(height: 10),
-            Text(
-              '0:59',
-              style: TextStyle(fontSize: 24),
-            ),
-          ],
-        );
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          answer,
+          style: TextStyle(fontSize: 50),
+        ),
+        SizedBox(height: 10),
+        Text(
+          timeLeft.toString(),
+          style: TextStyle(fontSize: isLast5Seconds ? 50 : 24),
+        ),
+        // !isLast5Seconds
+        //     ? Text(
+        //         timeLeft.toString(),
+        //         style: TextStyle(fontSize: 24),
+        //       )
+        //     : ScaleAnimatedTextKit(
+        //         text: [timeLeft.toString()],
+        //         isRepeatingAnimation: false,
+        //         textStyle: Theme.of(context)
+        //             .textTheme
+        //             .bodyText1
+        //             .copyWith(fontSize: 24),
+        //       )
+      ],
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:naija_charades/providers/answers.dart';
 import 'package:naija_charades/screens/game_screen.dart';
+import 'package:provider/provider.dart';
 
 class DeckInfo extends StatelessWidget {
   @override
@@ -26,8 +28,13 @@ class DeckInfo extends StatelessWidget {
             RaisedButton(
                 child: Text('Play'),
                 onPressed: () {
-                  // TODO: use args
-                  Navigator.of(context).pushNamed(GameScreen.routeName);
+                  Navigator.of(context).pushReplacementNamed(
+                    GameScreen.routeName,
+                    arguments: {
+                      'words':
+                          Provider.of<Answers>(context, listen: false).words,
+                    },
+                  );
                 })
           ],
         )
