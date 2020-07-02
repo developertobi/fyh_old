@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:naija_charades/providers/answers.dart';
+import 'package:naija_charades/providers/responses.dart';
+import 'package:naija_charades/providers/words.dart';
 import 'package:naija_charades/screens/game_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +18,13 @@ class NaijaCharadesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) => Answers(),
+    return MultiProvider(
+      providers: [
+        Provider(create: (_) => Words()),
+        Provider(create: (_) => Responses()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        
         title: 'Naija Charades',
         theme: ThemeData(
           textTheme: GoogleFonts.ptSerifTextTheme(Theme.of(context).textTheme)

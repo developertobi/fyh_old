@@ -1,5 +1,5 @@
-class Answers {
-  final List<String> _words = [
+class Words {
+  final List<String> _wordList = [
     'Duncan Mighty',
     'Shekpe',
     'Shokolokobangoshay',
@@ -14,5 +14,5 @@ class Answers {
     'Lagos',
   ];
 
-  List<String> get words => [..._words];
+  List<String> get words => [..._wordList];
 }

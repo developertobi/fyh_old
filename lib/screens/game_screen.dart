@@ -4,10 +4,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
+import 'package:naija_charades/models/response.dart';
+import 'package:naija_charades/providers/responses.dart';
 import 'package:naija_charades/widgets/ready_timer.dart';
 import 'package:naija_charades/widgets/status.dart';
 import 'package:naija_charades/widgets/time_up.dart';
-import 'package:naija_charades/widgets/words.dart';
+import 'package:naija_charades/widgets/word.dart';
+import 'package:provider/provider.dart';
 import 'package:sensors/sensors.dart';
 
 import 'package:tilt_action/tilt_action.dart';
@@ -28,8 +31,10 @@ class _GameScreenState extends State<GameScreen> {
   bool contentIsStatus = false;
   int wordsIndex;
   List<String> words = [];
+  List<Response> responses = [];
   Tilt _tilt;
-  int timeLeft = 2;
+  int timeLeft = 10;
+  int _score = 0;
   StreamSubscription _streamSubscription;
   Color _backgroundColor = AppColors.prussianBlue;
   Widget _content = const Center(
@@ -88,13 +93,17 @@ class _GameScreenState extends State<GameScreen> {
     print('Tilt initialized');
 
     _tilt = Tilt.waitForStart(
-      onTiltUp: () => _onTilt(TiltAction.up),
+      onTiltUp: () {
+        _onTilt(TiltAction.up);
+        _score++;
+      },
       onTiltDown: () => _onTilt(TiltAction.down),
       onNormal: () {
         contentIsStatus = false;
         print('normal');
         _setContent(
           Word(
+            score: _score.toString(),
             answer: words[wordsIndex],
             timeLeft: timeLeft,
           ),
@@ -112,6 +121,13 @@ class _GameScreenState extends State<GameScreen> {
     direction == TiltAction.up
         ? _changeBackgroundColor(AppColors.vagasGold)
         : _changeBackgroundColor(AppColors.persimmon);
+
+    responses.add(
+      Response(
+        isCorrect: direction == TiltAction.up,
+        word: words[wordsIndex],
+      ),
+    );
 
     words.removeAt(wordsIndex);
     _randomizeWordIndex();
@@ -153,6 +169,12 @@ class _GameScreenState extends State<GameScreen> {
         if (timeLeft < 1) {
           t.cancel();
           _tilt.stopListening();
+
+          final responseProvider =
+              Provider.of<Responses>(context, listen: false);
+          responseProvider.responses = responses;
+          responseProvider.score = _score;
+
           _setContent(TimeUp());
           _changeBackgroundColor(AppColors.rossoCorsa);
         } else {
@@ -168,6 +190,7 @@ class _GameScreenState extends State<GameScreen> {
             _setContent(
               Word(
                 answer: words[wordsIndex],
+                score: _score.toString(),
                 timeLeft: timeLeft,
                 isLast5Seconds: isLast5sec,
               ),

@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
-import 'package:naija_charades/screens/home_screen.dart';
+import 'package:naija_charades/providers/responses.dart';
 import 'package:naija_charades/widgets/round_button.dart';
+import 'package:provider/provider.dart';
 
-// TODO: Possible hack is to use provider to delete the content of column before transition
-
-class ResultsBottomSheet extends StatefulWidget {
-  @override
-  _ResultsBottomSheetState createState() => _ResultsBottomSheetState();
-}
-
-class _ResultsBottomSheetState extends State<ResultsBottomSheet> {
+class ResultsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final responseProvider = Provider.of<Responses>(context, listen: false);
+
     return Container(
         color: Colors.red,
         child: FractionallySizedBox(
@@ -46,25 +42,32 @@ class _ResultsBottomSheetState extends State<ResultsBottomSheet> {
                   style: TextStyle(fontSize: 18),
                 ),
                 Text(
-                  '05',
+                  responseProvider.score.toString(),
                   style: TextStyle(fontSize: 60, fontWeight: FontWeight.w800),
                 ),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                        // color: Colors.red,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.white30)),
                     child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, i) => Text(
-                        'Shokoloko',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 34,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
+                      itemCount: responseProvider.responses.length,
+                      itemBuilder: (context, i) {
+                        var response = responseProvider.responses[i];
+                        return Text(
+                          response.word,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: response.isCorrect
+                                ? Colors.white
+                                : Colors.white24,
+                            fontSize: 34,
+                            decoration: response.isCorrect
+                                ? TextDecoration.none
+                                : TextDecoration.lineThrough,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),

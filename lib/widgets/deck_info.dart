@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:naija_charades/providers/answers.dart';
+import 'package:naija_charades/providers/words.dart';
 import 'package:naija_charades/screens/game_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +32,7 @@ class DeckInfo extends StatelessWidget {
                     GameScreen.routeName,
                     arguments: {
                       'words':
-                          Provider.of<Answers>(context, listen: false).words,
+                          Provider.of<Words>(context, listen: false).words,
                     },
                   );
                 })
