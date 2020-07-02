@@ -25,19 +25,6 @@ class Word extends StatelessWidget {
           timeLeft.toString(),
           style: TextStyle(fontSize: isLast5Seconds ? 50 : 24),
         ),
-        // !isLast5Seconds
-        //     ? Text(
-        //         timeLeft.toString(),
-        //         style: TextStyle(fontSize: 24),
-        //       )
-        //     : ScaleAnimatedTextKit(
-        //         text: [timeLeft.toString()],
-        //         isRepeatingAnimation: false,
-        //         textStyle: Theme.of(context)
-        //             .textTheme
-        //             .bodyText1
-        //             .copyWith(fontSize: 24),
-        //       )
       ],
     );
   }

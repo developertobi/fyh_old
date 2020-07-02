@@ -21,6 +21,7 @@ class NaijaCharadesApp extends StatelessWidget {
       create: (_) => Answers(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        
         title: 'Naija Charades',
         theme: ThemeData(
           textTheme: GoogleFonts.ptSerifTextTheme(Theme.of(context).textTheme)

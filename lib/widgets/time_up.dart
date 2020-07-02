@@ -1,6 +1,12 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:naija_charades/providers/answers.dart';
+import 'package:naija_charades/screens/game_screen.dart';
+import 'package:naija_charades/screens/home_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'results_bottom_sheet.dart';
 
 class TimeUp extends StatelessWidget {
   @override
@@ -11,33 +17,20 @@ class TimeUp extends StatelessWidget {
         text: ['Time UP'],
         totalRepeatCount: 1,
         textStyle: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 70),
-        onFinished: () {
+        onFinished: () async {
           SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,
             DeviceOrientation.portraitDown,
           ]);
 
-          showModalBottomSheet<void>(
+          showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
-              return Container(
-                height: 200,
-                color: Colors.amber,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Text('Modal BottomSheet'),
-                      RaisedButton(
-                        child: const Text('Close BottomSheet'),
-                        onPressed: () => Navigator.pop(context),
-                      )
-                    ],
-                  ),
-                ),
-              );
+              return ResultsBottomSheet();
             },
+          ).then(
+            (_) => Navigator.of(context)
+                .pushReplacementNamed(HomeScreen.routeName),
           );
         },
       ),

@@ -5,5 +5,5 @@ const rossoCorsa = Color(0xFFD00000);
 const cadetBlueCrayola = Color(0xFFA2AEBB);
 const vagasGold = Color(0xFFFFBA08);
 const selectiveYellow = Color(0xFFFFBA08);
-const greenBlueCrayola = Color(0xFF);
+const greenBlueCrayola = Color(0xFF3F88C5);
 const persimmon = Color(0xFFE85D04);

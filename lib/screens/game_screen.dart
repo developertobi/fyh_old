@@ -29,7 +29,7 @@ class _GameScreenState extends State<GameScreen> {
   int wordsIndex;
   List<String> words = [];
   Tilt _tilt;
-  int timeLeft = 10;
+  int timeLeft = 2;
   StreamSubscription _streamSubscription;
   Color _backgroundColor = AppColors.prussianBlue;
   Widget _content = const Center(
