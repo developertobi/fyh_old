@@ -19,6 +19,11 @@ dependencies:
   sensors: ^0.4.2+2
   tilt_action: ^0.1.0
   provider: ^4.1.3
+  video_player: ^0.10.11+2
+  gallery_saver: ^2.0.1
+  camera: ^0.5.8+2
+  path_provider: ^1.6.11
+
   cupertino_icons: ^0.1.3
 
 dev_dependencies:

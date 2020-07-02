@@ -1,15 +1,20 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:async';
 
+import 'package:camera/camera.dart';
+import 'package:naija_charades/main.dart'; // imported this bc of cameras var. kinda hacky
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
 import 'package:naija_charades/models/response.dart';
 import 'package:naija_charades/providers/responses.dart';
+import 'package:naija_charades/providers/video_file.dart';
 import 'package:naija_charades/widgets/ready_timer.dart';
 import 'package:naija_charades/widgets/status.dart';
 import 'package:naija_charades/widgets/time_up.dart';
 import 'package:naija_charades/widgets/word.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors/sensors.dart';
 
@@ -29,6 +34,8 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   bool contentIsStatus = false;
+  CameraController _cameraController;
+  String _videoFilePath;
   int wordsIndex;
   List<String> words = [];
   List<Response> responses = [];
@@ -45,6 +52,8 @@ class _GameScreenState extends State<GameScreen> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
     ]);
+
+    _initCameraRequirements();
 
     // init words & wordsIndex
     Future.delayed(Duration.zero, () {
@@ -63,23 +72,42 @@ class _GameScreenState extends State<GameScreen> {
   void dispose() {
     _streamSubscription.cancel();
     _tilt.stopListening();
+    _cameraController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: _backgroundColor,
-      body: Container(
-        child: Center(
-          child: FractionallySizedBox(
-            heightFactor: 0.8,
-            widthFactor: 0.8,
-            alignment: Alignment.center,
-            child: _content,
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: _cameraController.value.isInitialized
+              ? RotatedBox(
+                  quarterTurns: 3,
+                  child: AspectRatio(
+                    aspectRatio: _cameraController.value.aspectRatio,
+                    child: CameraPreview(_cameraController),
+                  ),
+                )
+              : Container(),
+        ),
+        Opacity(
+          opacity: 0.9,
+          child: Scaffold(
+            backgroundColor: _backgroundColor,
+            body: Container(
+              child: Center(
+                child: FractionallySizedBox(
+                  heightFactor: 0.8,
+                  widthFactor: 0.8,
+                  alignment: Alignment.center,
+                  child: _content,
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -87,6 +115,30 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _backgroundColor = color;
     });
+  }
+
+  void _initCameraRequirements() {
+    // Init camera
+    _cameraController = CameraController(cameras[1], ResolutionPreset.medium);
+    _cameraController.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
+
+    _setFilePath();
+  }
+
+  void _setFilePath() async {
+    print('set path called');
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String dirPath = '${appDocDir.path}/videos';
+    await Directory(dirPath).create(recursive: true);
+
+    _videoFilePath = '$dirPath/video.mp4';
+
+    Provider.of<VideoFile>(context, listen: false).setPath(_videoFilePath);
   }
 
   void _initTilt() {
@@ -154,6 +206,7 @@ class _GameScreenState extends State<GameScreen> {
             onReady: () {
               _startTimerCountdown();
               _tilt.startListening();
+              _cameraController.startVideoRecording(_videoFilePath);
             },
           ),
         );
@@ -169,6 +222,7 @@ class _GameScreenState extends State<GameScreen> {
         if (timeLeft < 1) {
           t.cancel();
           _tilt.stopListening();
+          _cameraController.stopVideoRecording();
 
           final responseProvider =
               Provider.of<Responses>(context, listen: false);
@@ -187,14 +241,12 @@ class _GameScreenState extends State<GameScreen> {
           }
 
           if (!contentIsStatus) {
-            _setContent(
-              Word(
-                answer: words[wordsIndex],
-                score: _score.toString(),
-                timeLeft: timeLeft,
-                isLast5Seconds: isLast5sec,
-              ),
-            );
+            _setContent(Word(
+              answer: words[wordsIndex],
+              score: _score.toString(),
+              timeLeft: timeLeft,
+              isLast5Seconds: isLast5sec,
+            ));
           }
         }
       },

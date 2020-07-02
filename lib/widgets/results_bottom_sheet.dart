@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
 import 'package:naija_charades/providers/responses.dart';
+import 'package:naija_charades/providers/video_file.dart';
 import 'package:naija_charades/widgets/round_button.dart';
 import 'package:provider/provider.dart';
+
+import 'video_preview.dart';
 
 class ResultsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responseProvider = Provider.of<Responses>(context, listen: false);
+    final videoFilePath = Provider.of<VideoFile>(context).path;
 
     return Container(
         color: Colors.red,
@@ -72,14 +76,7 @@ class ResultsBottomSheet extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Container(
-                  height: 250,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white30),
-                  ),
-                ),
+                VideoPreview(videoFilePath),
                 const SizedBox(height: 10),
                 ButtonBar(
                   buttonPadding: EdgeInsets.all(0),
@@ -101,3 +98,5 @@ class ResultsBottomSheet extends StatelessWidget {
         ));
   }
 }
+
+

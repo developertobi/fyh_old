@@ -1,13 +1,22 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:naija_charades/providers/responses.dart';
+import 'package:naija_charades/providers/video_file.dart';
 import 'package:naija_charades/providers/words.dart';
 import 'package:naija_charades/screens/game_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home_screen.dart';
 
-void main() => runApp(NaijaCharadesApp());
+List<CameraDescription> cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  print('Cameras available');
+  runApp(NaijaCharadesApp());
+}
 
 class NaijaCharadesApp extends StatelessWidget {
   final _textStyle = TextStyle(
@@ -22,6 +31,7 @@ class NaijaCharadesApp extends StatelessWidget {
       providers: [
         Provider(create: (_) => Words()),
         Provider(create: (_) => Responses()),
+        Provider(create: (_) => VideoFile()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
