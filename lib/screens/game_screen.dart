@@ -40,7 +40,7 @@ class _GameScreenState extends State<GameScreen> {
   List<String> words = [];
   List<Response> responses = [];
   Tilt _tilt;
-  int timeLeft = 10;
+  int timeLeft = 5;
   int _score = 0;
   StreamSubscription _streamSubscription;
   Color _backgroundColor = AppColors.prussianBlue;

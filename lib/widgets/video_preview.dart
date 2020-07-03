@@ -25,11 +25,18 @@ class _VideoPreviewState extends State<VideoPreview> {
       }
       _videoPlayerController.setLooping(true);
       _videoPlayerController.play();
+      print('Aspect ratio: ${_videoPlayerController.value.aspectRatio}');
 
       setState(() {});
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _videoPlayerController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,7 +48,7 @@ class _VideoPreviewState extends State<VideoPreview> {
         child: RotatedBox(
           quarterTurns: 3,
           child: Container(
-            height: 250,
+            height: (MediaQuery.of(context).size.width),
             margin: EdgeInsets.all(0),
             child: _videoPlayerController.value.initialized
                 ? AspectRatio(
@@ -55,23 +62,3 @@ class _VideoPreviewState extends State<VideoPreview> {
     );
   }
 }
-
-// Container(
-//         height: 250,
-//         decoration: BoxDecoration(
-//           color: Colors.red,
-//           borderRadius: BorderRadius.circular(10),
-//           border: Border.all(color: Colors.white30),
-//         ),
-//         child: RotatedBox(
-//           quarterTurns: 3,
-//           child: Container(
-//             margin: EdgeInsets.all(0),
-//             child: _videoPlayerController.value.initialized
-//                 ? AspectRatio(
-//                     aspectRatio: _videoPlayerController.value.aspectRatio,
-//                     child: VideoPlayer(_videoPlayerController),
-//                   )
-//                 : Container(),
-//           ),
-//         ))

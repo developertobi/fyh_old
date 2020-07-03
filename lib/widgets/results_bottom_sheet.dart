@@ -1,4 +1,7 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
 import 'package:naija_charades/providers/responses.dart';
 import 'package:naija_charades/providers/video_file.dart';
@@ -89,6 +92,19 @@ class ResultsBottomSheet extends StatelessWidget {
                     RoundButton(
                       buttonText: 'Save Video',
                       isFocused: true,
+                      onPressed: () =>
+                          GallerySaver.saveVideo(videoFilePath).then(
+                        (_) => Flushbar(
+                          messageText: Text(
+                            'Video Saved!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          duration: Duration(seconds: 2),
+                          animationDuration: Duration(milliseconds: 500),
+                          flushbarStyle: FlushbarStyle.GROUNDED,
+                        )..show(context),
+                      ),
                     ),
                   ],
                 )
@@ -98,5 +114,3 @@ class ResultsBottomSheet extends StatelessWidget {
         ));
   }
 }
-
-

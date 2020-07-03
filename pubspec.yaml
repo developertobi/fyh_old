@@ -23,6 +23,7 @@ dependencies:
   gallery_saver: ^2.0.1
   camera: ^0.5.8+2
   path_provider: ^1.6.11
+  flushbar: ^1.10.4
 
   cupertino_icons: ^0.1.3
 
