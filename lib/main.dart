@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:naija_charades/providers/firestore_data.dart';
 import 'package:naija_charades/providers/responses.dart';
 import 'package:naija_charades/providers/video_file.dart';
 import 'package:naija_charades/providers/words.dart';
@@ -32,6 +33,7 @@ class NaijaCharadesApp extends StatelessWidget {
         Provider(create: (_) => Words()),
         Provider(create: (_) => Responses()),
         Provider(create: (_) => VideoFile()),
+        Provider(create: (_) => FirestoreData())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

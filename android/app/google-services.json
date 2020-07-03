@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "536621231133",
+    "firebase_url": "https://naija-charades.firebaseio.com",
+    "project_id": "naija-charades",
+    "storage_bucket": "naija-charades.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536621231133:android:c33d323a5002989804eaf4",
+        "android_client_info": {
+          "package_name": "com.timothyitodo.naija_charades"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536621231133-0nll5maqhh9huvu2hqlk6sht0dd4iamc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCED-Qtb5hIc0Spl_cqiadn3VARvjI5lrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536621231133-0nll5maqhh9huvu2hqlk6sht0dd4iamc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "536621231133-3p8nmjo5osi19b8bo48ielsq4l4q7crj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.timothyitodo.naijaCharades"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

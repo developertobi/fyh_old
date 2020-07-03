@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>536621231133-3p8nmjo5osi19b8bo48ielsq4l4q7crj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.536621231133-3p8nmjo5osi19b8bo48ielsq4l4q7crj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyASRnPBgy0NHbZe_xXkipLOTe8j1Ag_2D4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>536621231133</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.timothyitodo.naijaCharades</string>
+	<key>PROJECT_ID</key>
+	<string>naija-charades</string>
+	<key>STORAGE_BUCKET</key>
+	<string>naija-charades.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:536621231133:ios:0417b6fa84482e4d04eaf4</string>
+	<key>DATABASE_URL</key>
+	<string>https://naija-charades.firebaseio.com</string>
+</dict>
+</plist>

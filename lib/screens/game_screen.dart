@@ -241,12 +241,14 @@ class _GameScreenState extends State<GameScreen> {
           }
 
           if (!contentIsStatus) {
-            _setContent(Word(
-              answer: words[wordsIndex],
-              score: _score.toString(),
-              timeLeft: timeLeft,
-              isLast5Seconds: isLast5sec,
-            ));
+            _setContent(
+              Word(
+                answer: words[wordsIndex],
+                score: _score.toString(),
+                timeLeft: timeLeft,
+                isLast5Seconds: isLast5sec,
+              ),
+            );
           }
         }
       },
