@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:naija_charades/models/deck.dart';
+import 'package:provider/provider.dart';
 
 class DeckWallpaper extends StatelessWidget {
   final bool isDialog;
-  final String title;
 
   const DeckWallpaper({
     this.isDialog = false,
-    this.title = 'Afro Beats',
   });
 
   @override
@@ -33,7 +33,7 @@ class DeckWallpaper extends StatelessWidget {
             child: Align(
               child: isDialog
                   ? Text(
-                      title,
+                      Provider.of<Deck>(context, listen: false).title,
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
@@ -41,7 +41,7 @@ class DeckWallpaper extends StatelessWidget {
                           .copyWith(fontSize: 25),
                     )
                   : AutoSizeText(
-                      title,
+                      Provider.of<Deck>(context, listen: false).title,
                       maxLines: 3,
                       minFontSize: 10,
                       maxFontSize: 20,

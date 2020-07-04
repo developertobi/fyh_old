@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:naija_charades/models/category.dart';
+import 'package:naija_charades/models/deck.dart';
+import 'package:provider/provider.dart';
 
-import 'deck.dart';
+import 'deck_card.dart';
 
 class CategoryDecks extends StatelessWidget {
   final categoryTitle;
-  final List categoryList;
+  final List<Deck> decks;
 
-  const CategoryDecks({this.categoryList, this.categoryTitle});
+  const CategoryDecks({this.decks, this.categoryTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +28,11 @@ class CategoryDecks extends StatelessWidget {
           height: 200,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 5,
-            itemBuilder: (_, i) => Deck(),
+            itemCount: decks.length,
+            itemBuilder: (_, i) => Provider<Deck>.value(
+              value: decks[i],
+              child: DeckCard(),
+            ),
           ),
         ),
         const SizedBox(height: 10),

@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                             itemBuilder: (_, i) {
                               return CategoryDecks(
                                 categoryTitle: categories[i].title,
-                                categoryList: categories[i].decks,
+                                decks: categories[i].decks,
                               );
                             },
                           );

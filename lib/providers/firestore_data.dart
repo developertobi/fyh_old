@@ -3,6 +3,8 @@ import 'package:naija_charades/models/category.dart';
 import 'package:naija_charades/models/deck.dart';
 
 class FirestoreData {
+  List<Category> data;
+
   Future<List<Category>> updateData() async {
     List<Category> categories = [];
 
@@ -30,7 +32,8 @@ class FirestoreData {
         ),
       );
     }
-
+    
+    data = categories;
     return categories;
   }
 }

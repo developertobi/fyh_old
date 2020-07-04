@@ -37,7 +37,7 @@ class _GameScreenState extends State<GameScreen> {
   CameraController _cameraController;
   String _videoFilePath;
   int wordsIndex;
-  List<String> words = [];
+  List words = [];
   List<Response> responses = [];
   Tilt _tilt;
   int timeLeft = 5;
@@ -58,7 +58,9 @@ class _GameScreenState extends State<GameScreen> {
     // init words & wordsIndex
     Future.delayed(Duration.zero, () {
       Map<String, List> args = ModalRoute.of(context).settings.arguments;
+   
       words = args['words'];
+
       _randomizeWordIndex();
     });
 
@@ -131,7 +133,6 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _setFilePath() async {
-    print('set path called');
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String dirPath = '${appDocDir.path}/videos';
     await Directory(dirPath).create(recursive: true);
@@ -142,8 +143,6 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _initTilt() {
-    print('Tilt initialized');
-
     _tilt = Tilt.waitForStart(
       onTiltUp: () {
         _onTilt(TiltAction.up);
@@ -152,7 +151,6 @@ class _GameScreenState extends State<GameScreen> {
       onTiltDown: () => _onTilt(TiltAction.down),
       onNormal: () {
         contentIsStatus = false;
-        print('normal');
         _setContent(
           Word(
             score: _score.toString(),
@@ -166,7 +164,6 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _onTilt(TiltAction direction) {
-    print('up or down');
     contentIsStatus = true;
     _setContent(Status(isCorrect: direction == TiltAction.up ? true : false));
 

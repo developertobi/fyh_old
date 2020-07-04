@@ -15,7 +15,6 @@ List<CameraDescription> cameras;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
-  print('Cameras available');
   runApp(NaijaCharadesApp());
 }
 
