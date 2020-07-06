@@ -14,7 +14,7 @@ class TimeUp extends StatelessWidget {
         text: ['Time UP'],
         totalRepeatCount: 1,
         textStyle: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 70),
-        onFinished: () async {
+        onFinished: () {
           SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,
             DeviceOrientation.portraitDown,
@@ -25,10 +25,8 @@ class TimeUp extends StatelessWidget {
             builder: (BuildContext context) {
               return ResultsBottomSheet();
             },
-          ).then(
-            (_) => Navigator.of(context)
-                .pushReplacementNamed(HomeScreen.routeName),
-          );
+          ).then((_) =>
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName));
         },
       ),
     );

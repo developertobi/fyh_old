@@ -22,7 +22,7 @@ class DeckWallpaper extends StatelessWidget {
             child: FittedBox(
               child: Center(
                 child: Icon(
-                  Icons.hot_tub,
+                  Icons.speaker_group,
                   color: Colors.white,
                 ),
               ),

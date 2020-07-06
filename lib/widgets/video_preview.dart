@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPreview extends StatefulWidget {
@@ -19,12 +20,14 @@ class _VideoPreviewState extends State<VideoPreview> {
     _videoPlayerController =
         VideoPlayerController.file(File(widget.videoFilePath));
 
+    print(widget.videoFilePath);
+
     _videoPlayerController.initialize().then((_) {
       if (!mounted) {
         return;
       }
       _videoPlayerController.setLooping(true);
-      _videoPlayerController.play();
+
       print('Aspect ratio: ${_videoPlayerController.value.aspectRatio}');
 
       setState(() {});
@@ -50,12 +53,43 @@ class _VideoPreviewState extends State<VideoPreview> {
           child: Container(
             height: (MediaQuery.of(context).size.width),
             margin: EdgeInsets.all(0),
-            child: _videoPlayerController.value.initialized
-                ? AspectRatio(
-                    aspectRatio: _videoPlayerController.value.aspectRatio,
-                    child: VideoPlayer(_videoPlayerController),
-                  )
-                : Container(),
+            child: GestureDetector(
+              onTap: () {
+                if (_videoPlayerController.value.isPlaying) {
+                  _videoPlayerController.pause();
+                }
+                setState(() {});
+              },
+              child: Stack(
+                children: _videoPlayerController.value.initialized
+                    ? <Widget>[
+                        AspectRatio(
+                          aspectRatio: _videoPlayerController.value.aspectRatio,
+                          child: VideoPlayer(_videoPlayerController),
+                        ),
+                        if (!_videoPlayerController.value.isPlaying)
+                          Positioned.fill(
+                            child: Center(
+                              child: RotatedBox(
+                                quarterTurns: 1,
+                                child: IconButton(
+                                  onPressed: () {
+                                    _videoPlayerController.play();
+                                    setState(() {});
+                                  },
+                                  icon: Icon(
+                                    FontAwesome5Solid.play,
+                                    color: Colors.blue,
+                                    size: 60,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                      ]
+                    : <Widget>[Container()],
+              ),
+            ),
           ),
         ),
       ),

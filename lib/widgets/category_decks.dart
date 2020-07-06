@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:naija_charades/models/category.dart';
 import 'package:naija_charades/models/deck.dart';
 import 'package:provider/provider.dart';
 

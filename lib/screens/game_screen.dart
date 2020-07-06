@@ -17,7 +17,6 @@ import 'package:naija_charades/widgets/word.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors/sensors.dart';
-
 import 'package:tilt_action/tilt_action.dart';
 
 enum TiltAction {
@@ -40,7 +39,7 @@ class _GameScreenState extends State<GameScreen> {
   List words = [];
   List<Response> responses = [];
   Tilt _tilt;
-  int timeLeft = 5;
+  int timeLeft = 10;
   int _score = 0;
   StreamSubscription _streamSubscription;
   Color _backgroundColor = AppColors.prussianBlue;
@@ -54,16 +53,7 @@ class _GameScreenState extends State<GameScreen> {
     ]);
 
     _initCameraRequirements();
-
-    // init words & wordsIndex
-    Future.delayed(Duration.zero, () {
-      Map<String, List> args = ModalRoute.of(context).settings.arguments;
-   
-      words = args['words'];
-
-      _randomizeWordIndex();
-    });
-
+    _initWords();
     _startListeningForHorizontalPhonePosition();
     _initTilt();
 
@@ -139,6 +129,10 @@ class _GameScreenState extends State<GameScreen> {
 
     _videoFilePath = '$dirPath/video.mp4';
 
+    if (await File(_videoFilePath).exists()) {
+      await File(_videoFilePath).delete();
+    }
+
     Provider.of<VideoFile>(context, listen: false).setPath(_videoFilePath);
   }
 
@@ -153,14 +147,21 @@ class _GameScreenState extends State<GameScreen> {
         contentIsStatus = false;
         _setContent(
           Word(
-            score: _score.toString(),
             answer: words[wordsIndex],
-            timeLeft: timeLeft,
+            timeLeft: toTwoDigits(timeLeft),
           ),
         );
         _changeBackgroundColor(AppColors.prussianBlue);
       },
     );
+  }
+
+  void _initWords() {
+    Future.delayed(Duration.zero, () {
+      Map<String, List> args = ModalRoute.of(context).settings.arguments;
+      words = args['words'];
+      _randomizeWordIndex();
+    });
   }
 
   void _onTilt(TiltAction direction) {
@@ -241,8 +242,7 @@ class _GameScreenState extends State<GameScreen> {
             _setContent(
               Word(
                 answer: words[wordsIndex],
-                score: _score.toString(),
-                timeLeft: timeLeft,
+                timeLeft: toTwoDigits(timeLeft),
                 isLast5Seconds: isLast5sec,
               ),
             );
@@ -250,5 +250,11 @@ class _GameScreenState extends State<GameScreen> {
         }
       },
     );
+  }
+
+  String toTwoDigits(int num) {
+    if ((num / 10).floor() == 0) return '0${num.toString()}';
+
+    return num.toString();
   }
 }
