@@ -11,34 +11,34 @@ class ReadyTimer extends StatelessWidget {
     @required this.onReady,
   });
 
-  void _setVibration() async {
-    int timeLength = 4;
+  // void _setVibration() async {
+  //   int timeLength = 4;
 
-    Timer.periodic(
-      Duration(milliseconds: 1600),
-      (t) {
-        if (timeLength < 1) {
-          t.cancel();
-        } else {
-          HapticFeedback.mediumImpact();
-          timeLength -= 1;
-        }
-      },
-    );
-  }
+  //   Timer.periodic(
+  //     Duration(milliseconds: 1600),
+  //     (t) {
+  //       if (timeLength < 1) {
+  //         t.cancel();
+  //       } else {
+  //         HapticFeedback.mediumImpact();
+  //         timeLength -= 1;
+  //       }
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    _setVibration();
+    // _setVibration();
 
     return FittedBox(
       child: RotateAnimatedTextKit(
         onFinished: onReady,
         totalRepeatCount: 1,
-        textStyle: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 70),
+        textStyle: TextStyle(fontSize: 70, color: Colors.white),
         text: ['3', '2', '1', 'GO'],
         textAlign: TextAlign.center,
-        duration: Duration(milliseconds: 1500),
+        duration: Duration(milliseconds: 500),
       ),
     );
   }

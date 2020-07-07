@@ -13,7 +13,10 @@ class TimeUp extends StatelessWidget {
         scalingFactor: 1.5,
         text: ['Time UP'],
         totalRepeatCount: 1,
-        textStyle: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 70),
+        textStyle: TextStyle(
+          fontSize: 70,
+          color: Colors.white,
+        ),
         onFinished: () {
           SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,

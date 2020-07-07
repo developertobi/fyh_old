@@ -16,7 +16,9 @@ class ResultsBottomSheet extends StatelessWidget {
     final videoFilePath = Provider.of<VideoFile>(context).path;
 
     return Container(
-        color: Colors.red,
+        decoration: BoxDecoration(
+            color: Color(0xFF51100C),
+            border: Border.all(width: 0, color: Color(0xFF51100C))),
         child: FractionallySizedBox(
           heightFactor: 1.0,
           child: Container(
@@ -27,7 +29,7 @@ class ResultsBottomSheet extends StatelessWidget {
               left: 20,
             ),
             decoration: BoxDecoration(
-              color: AppColors.greenBlueCrayola,
+              color: AppColors.prussianBlue,
               borderRadius: const BorderRadius.only(
                 topLeft: const Radius.circular(25),
                 topRight: const Radius.circular(25),
@@ -45,11 +47,15 @@ class ResultsBottomSheet extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   'You answered',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 Text(
                   responseProvider.score.toString(),
-                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.w800),
+                  style: TextStyle(
+                    fontSize: 60,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
                 ),
                 Expanded(
                   child: Container(

@@ -44,7 +44,8 @@ class _GameScreenState extends State<GameScreen> {
   StreamSubscription _streamSubscription;
   Color _backgroundColor = AppColors.prussianBlue;
   Widget _content = const Center(
-      child: Text('Place on ForeHead', style: TextStyle(fontSize: 70)));
+      child: Text('Place on ForeHead',
+          style: TextStyle(fontSize: 70, color: Colors.white)));
 
   @override
   void initState() {
@@ -149,6 +150,7 @@ class _GameScreenState extends State<GameScreen> {
           Word(
             answer: words[wordsIndex],
             timeLeft: toTwoDigits(timeLeft),
+            isLast5Seconds: timeLeft < 6,
           ),
         );
         _changeBackgroundColor(AppColors.prussianBlue);
@@ -202,6 +204,7 @@ class _GameScreenState extends State<GameScreen> {
         _setContent(
           ReadyTimer(
             onReady: () {
+              HapticFeedback.vibrate();
               _startTimerCountdown();
               _tilt.startListening();
               _cameraController.startVideoRecording(_videoFilePath);

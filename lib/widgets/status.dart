@@ -17,7 +17,7 @@ class Status extends StatelessWidget {
       children: <Widget>[
         Text(
           isCorrect ? 'Correct' : 'Wrong',
-          style: TextStyle(fontSize: 50),
+          style: TextStyle(fontSize: 50, color: Colors.white),
         ),
         SizedBox(height: 20),
         Icon(

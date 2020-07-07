@@ -12,6 +12,8 @@ class DeckWallpaper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deck = Provider.of<Deck>(context, listen: false);
+
     return Container(
       height: 300,
       child: Column(
@@ -22,7 +24,7 @@ class DeckWallpaper extends StatelessWidget {
             child: FittedBox(
               child: Center(
                 child: Icon(
-                  Icons.speaker_group,
+                  IconData(deck.iconCodePoint, fontFamily: 'MaterialIcons'),
                   color: Colors.white,
                 ),
               ),
@@ -33,20 +35,21 @@ class DeckWallpaper extends StatelessWidget {
             child: Align(
               child: isDialog
                   ? Text(
-                      Provider.of<Deck>(context, listen: false).title,
+                      deck.title,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .copyWith(fontSize: 25),
+                      style: TextStyle(fontSize: 25, color: Colors.white),
                     )
                   : AutoSizeText(
-                      Provider.of<Deck>(context, listen: false).title,
+                      deck.title,
                       maxLines: 3,
                       minFontSize: 10,
                       maxFontSize: 20,
                       textAlign: TextAlign.center,
                       textScaleFactor: 1.5,
+                      style: TextStyle(
+                          color: Colors.white,
+                          letterSpacing: -0.5,
+                          fontWeight: FontWeight.bold),
                     ),
               alignment: Alignment.bottomCenter,
             ),

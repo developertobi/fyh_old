@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'deck_card.dart';
 
 class CategoryDecks extends StatelessWidget {
-  final categoryTitle;
+  final String categoryTitle;
   final List<Deck> decks;
 
   const CategoryDecks({this.decks, this.categoryTitle});
@@ -16,10 +16,11 @@ class CategoryDecks extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          categoryTitle,
+          '${categoryTitle[0].toUpperCase()}${categoryTitle.substring(1)}',
           style: TextStyle(
-            fontSize: 23,
-            fontWeight: FontWeight.w300,
+            fontSize: 25,
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
           ),
         ),
         const SizedBox(height: 10),

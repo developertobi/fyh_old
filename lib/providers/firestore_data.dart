@@ -21,6 +21,7 @@ class FirestoreData {
             title: deck['title'],
             description: deck['description'],
             words: deck['words'],
+            iconCodePoint: deck['icon_codepoint'],
           ),
         );
       }

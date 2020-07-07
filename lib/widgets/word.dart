@@ -19,12 +19,13 @@ class Word extends StatelessWidget {
       children: <Widget>[
         Text(
           answer,
-          style: TextStyle(fontSize: 50),
+          style: TextStyle(fontSize: 50, color: Colors.white),
         ),
         SizedBox(height: 50),
         Text(
           '0:$timeLeft',
-          style: TextStyle(fontSize: isLast5Seconds ? 50 : 24),
+          style: TextStyle(
+              fontSize: isLast5Seconds ? 50 : 24, color: Colors.white),
         ),
       ],
     );

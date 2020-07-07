@@ -46,9 +46,10 @@ class DeckInfo extends StatelessWidget {
   Text _buildText({BuildContext context, String text, double fontSize}) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.bodyText1.copyWith(
-            fontSize: fontSize,
-          ),
+      style: TextStyle(
+        fontSize: fontSize,
+        color: Colors.white,
+      ),
     );
   }
 }
