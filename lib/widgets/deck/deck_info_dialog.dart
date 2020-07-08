@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:naija_charades/widgets/deck_wallpaper.dart';
+import 'package:naija_charades/widgets/deck/deck_wallpaper.dart';
 
 import 'deck_flip_card_page.dart';
 import 'deck_info.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:naija_charades/models/deck.dart';
 import 'package:provider/provider.dart';
 
-import '../colors.dart' as AppColors;
+import '../../colors.dart' as AppColors;
 import 'deck_info_dialog.dart';
 import 'deck_wallpaper.dart';
 

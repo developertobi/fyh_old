@@ -1,7 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:naija_charades/screens/home_screen.dart';
-import 'package:naija_charades/widgets/round_button.dart';
+import 'package:naija_charades/widgets/home/round_button.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
 
 class ErrorMsg extends StatelessWidget {

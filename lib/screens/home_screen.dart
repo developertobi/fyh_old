@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:naija_charades/models/category.dart';
 import 'package:naija_charades/providers/firestore_data.dart';
 
-import 'package:naija_charades/widgets/category_decks.dart';
-import 'package:naija_charades/widgets/error_message.dart';
+import 'package:naija_charades/widgets/home/category_decks.dart';
+import 'package:naija_charades/widgets/home/error_message.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 

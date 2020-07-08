@@ -5,7 +5,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
 import 'package:naija_charades/providers/responses.dart';
 import 'package:naija_charades/providers/video_file.dart';
-import 'package:naija_charades/widgets/round_button.dart';
+import 'package:naija_charades/widgets/home/round_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 

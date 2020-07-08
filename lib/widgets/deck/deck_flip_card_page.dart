@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../colors.dart' as AppColors;
+import '../../colors.dart' as AppColors;
 
 class DeckFlipCardPage extends StatelessWidget {
   final Widget child;

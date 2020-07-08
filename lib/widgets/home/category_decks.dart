@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:naija_charades/models/deck.dart';
 import 'package:provider/provider.dart';
 
-import 'deck_card.dart';
+import '../deck/deck_card.dart';
 
 class CategoryDecks extends StatelessWidget {
   final String categoryTitle;
