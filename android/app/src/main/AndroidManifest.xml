@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="naija_charades"
+        android:label="For your Head"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
