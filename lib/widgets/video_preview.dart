@@ -20,8 +20,6 @@ class _VideoPreviewState extends State<VideoPreview> {
     _videoPlayerController =
         VideoPlayerController.file(File(widget.videoFilePath));
 
-    print(widget.videoFilePath);
-
     _videoPlayerController.initialize().then((_) {
       if (!mounted) {
         return;

@@ -38,12 +38,17 @@ class RoundButton extends StatelessWidget {
           // color: Colors.grey,
         ),
         child: Center(
-            child: AutoSizeText(
-          buttonText,
-          maxLines: 2,
-          maxFontSize: 20,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-        )),
+          child: AutoSizeText(
+            buttonText,
+            maxLines: 2,
+            maxFontSize: 20,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }

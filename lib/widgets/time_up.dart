@@ -2,10 +2,15 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/screens/home_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'results_bottom_sheet.dart';
 
 class TimeUp extends StatelessWidget {
+  final Map<String, PermissionStatus> statuses;
+
+  const TimeUp(this.statuses);
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -26,7 +31,10 @@ class TimeUp extends StatelessWidget {
           showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
-              return ResultsBottomSheet();
+              return ResultsBottomSheet(
+                showVideo: statuses['camera'].isGranted &&
+                    statuses['microphone'].isGranted,
+              );
             },
           ).then((_) =>
               Navigator.of(context).pushReplacementNamed(HomeScreen.routeName));

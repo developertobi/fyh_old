@@ -15,6 +15,7 @@ import 'package:naija_charades/widgets/status.dart';
 import 'package:naija_charades/widgets/time_up.dart';
 import 'package:naija_charades/widgets/word.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors/sensors.dart';
 import 'package:tilt_action/tilt_action.dart';
@@ -34,12 +35,14 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   bool contentIsStatus = false;
   CameraController _cameraController;
+  PermissionStatus _cameraPermissionStatus;
+  PermissionStatus _micPermissionStatus;
   String _videoFilePath;
   int wordsIndex;
   List words = [];
   List<Response> responses = [];
   Tilt _tilt;
-  int timeLeft = 10;
+  int timeLeft = 5;
   int _score = 0;
   StreamSubscription _streamSubscription;
   Color _backgroundColor = AppColors.prussianBlue;
@@ -74,15 +77,16 @@ class _GameScreenState extends State<GameScreen> {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: _cameraController.value.isInitialized
-              ? RotatedBox(
-                  quarterTurns: 3,
-                  child: AspectRatio(
-                    aspectRatio: _cameraController.value.aspectRatio,
-                    child: CameraPreview(_cameraController),
-                  ),
-                )
-              : Container(),
+          child:
+              _cameraController != null && _cameraController.value.isInitialized
+                  ? RotatedBox(
+                      quarterTurns: 3,
+                      child: AspectRatio(
+                        aspectRatio: _cameraController.value.aspectRatio,
+                        child: CameraPreview(_cameraController),
+                      ),
+                    )
+                  : Container(),
         ),
         Opacity(
           opacity: 0.9,
@@ -110,17 +114,22 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-  void _initCameraRequirements() {
-    // Init camera
-    _cameraController = CameraController(cameras[1], ResolutionPreset.medium);
-    _cameraController.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
+  void _initCameraRequirements() async {
+    _cameraPermissionStatus = await Permission.camera.status;
+    _micPermissionStatus = await Permission.microphone.status;
 
-    _setFilePath();
+    if (_cameraPermissionStatus.isGranted && _micPermissionStatus.isGranted) {
+      // Init camera
+      _cameraController = CameraController(cameras[1], ResolutionPreset.medium);
+      _cameraController.initialize().then((_) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {});
+      });
+
+      _setFilePath();
+    }
   }
 
   void _setFilePath() async {
@@ -207,7 +216,7 @@ class _GameScreenState extends State<GameScreen> {
               HapticFeedback.vibrate();
               _startTimerCountdown();
               _tilt.startListening();
-              _cameraController.startVideoRecording(_videoFilePath);
+              _cameraController?.startVideoRecording(_videoFilePath);
             },
           ),
         );
@@ -223,14 +232,20 @@ class _GameScreenState extends State<GameScreen> {
         if (timeLeft < 1) {
           t.cancel();
           _tilt.stopListening();
-          _cameraController.stopVideoRecording();
+          _cameraController?.stopVideoRecording();
 
           final responseProvider =
               Provider.of<Responses>(context, listen: false);
           responseProvider.responses = responses;
           responseProvider.score = _score;
 
-          _setContent(TimeUp());
+          HapticFeedback.vibrate();
+          _setContent(
+            TimeUp({
+              'camera': _cameraPermissionStatus,
+              'microphone': _micPermissionStatus,
+            }),
+          );
           _changeBackgroundColor(AppColors.rossoCorsa);
         } else {
           timeLeft -= 1;
@@ -257,7 +272,6 @@ class _GameScreenState extends State<GameScreen> {
 
   String toTwoDigits(int num) {
     if ((num / 10).floor() == 0) return '0${num.toString()}';
-
     return num.toString();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:naija_charades/models/deck.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ class DeckCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+          HapticFeedback.mediumImpact();
           var deck = Provider.of<Deck>(context, listen: false);
           _showDeckInfoDialog(context, deck);
         },

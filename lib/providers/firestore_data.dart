@@ -33,7 +33,7 @@ class FirestoreData {
         ),
       );
     }
-    
+
     data = categories;
     return categories;
   }

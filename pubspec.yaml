@@ -26,6 +26,7 @@ dependencies:
   flushbar: ^1.10.4
   firebase_core: ^0.4.5
   cloud_firestore: ^0.13.7
+  permission_handler: ^5.0.1+1
 
   cupertino_icons: ^0.1.3
 
