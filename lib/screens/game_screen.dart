@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
 import 'package:naija_charades/main.dart'; // imported this bc of cameras var. kinda hacky
 import 'package:flutter/material.dart';
@@ -42,13 +43,21 @@ class _GameScreenState extends State<GameScreen> {
   List words = [];
   List<Response> responses = [];
   Tilt _tilt;
-  int timeLeft = 60;
+  int timeLeft = 10;
   int _score = 0;
   StreamSubscription _streamSubscription;
   Color _backgroundColor = AppColors.prussianBlue;
   Widget _content = const Center(
-      child: Text('Place on ForeHead',
-          style: TextStyle(fontSize: 70, color: Colors.white)));
+      child: AutoSizeText(
+    'Place on ForeHead',
+    style: TextStyle(fontSize: 70, color: Colors.white),
+    minFontSize: 20,
+    maxLines: 1,
+    overflow: TextOverflow.ellipsis,
+  ));
+
+  // Text('Place on ForeHead',
+  //     style: TextStyle(fontSize: 70, color: Colors.white)));
 
   @override
   void initState() {

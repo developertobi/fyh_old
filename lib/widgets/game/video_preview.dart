@@ -62,7 +62,10 @@ class _VideoPreviewState extends State<VideoPreview> {
                 children: _videoPlayerController.value.initialized
                     ? <Widget>[
                         AspectRatio(
-                          aspectRatio: _videoPlayerController.value.aspectRatio,
+                          // Android's aspect ration is inverse of iphone
+                          aspectRatio: Platform.isAndroid
+                              ? 1 / _videoPlayerController.value.aspectRatio
+                              : _videoPlayerController.value.aspectRatio,
                           child: VideoPlayer(_videoPlayerController),
                         ),
                         if (!_videoPlayerController.value.isPlaying)
