@@ -4,5 +4,5 @@ class Results {
   List<Response> responses;
   int score;
   String deckImageUrl;
-  String colorHex;
+  int colorHex;
 }

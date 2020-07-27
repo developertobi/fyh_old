@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:naija_charades/constants.dart';
 import 'package:naija_charades/models/deck.dart';
+import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/screens/game_screen.dart';
 import 'package:naija_charades/widgets/shared/round_button.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +9,7 @@ import 'package:provider/provider.dart';
 class DeckInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final description = Provider.of<Deck>(context, listen: false).description;
-    final words = Provider.of<Deck>(context, listen: false).words;
-    final img = Provider.of<Deck>(context, listen: false).backgroundUrl;
+    final deck = Provider.of<Deck>(context, listen: false);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,7 +18,8 @@ class DeckInfo extends StatelessWidget {
           child: Container(
             height: 100,
             child: AspectRatio(
-                aspectRatio: kDeckCardAspectRatio, child: Image.network(img)),
+                aspectRatio: kDeckCardAspectRatio,
+                child: Image.network(deck.backgroundUrl)),
           ),
         ),
         const SizedBox(height: 20),
@@ -27,7 +27,7 @@ class DeckInfo extends StatelessWidget {
           child: SingleChildScrollView(
             child: _buildText(
               context: context,
-              text: description,
+              text: deck.description,
               fontSize: 18,
             ),
           ),
@@ -44,13 +44,19 @@ class DeckInfo extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                GameScreen.routeName,
-                (route) => false,
-                arguments: {
-                  'words': words,
-                },
-              ),
+              onPressed: () {
+                final resultProvider =
+                    Provider.of<Results>(context, listen: false);
+                resultProvider.colorHex = deck.color;
+                resultProvider.deckImageUrl = deck.backgroundUrl;
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  GameScreen.routeName,
+                  (route) => false,
+                  arguments: {
+                    'words': deck.words,
+                  },
+                );
+              },
             )
           ],
         )

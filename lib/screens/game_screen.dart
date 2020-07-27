@@ -50,11 +50,6 @@ class _GameScreenState extends State<GameScreen> {
   StreamSubscription _streamSubscription;
   Color _backgroundColor = Colors.black;
 
-  // Widget _content = Word(
-  //   answer: "Test",
-  //   timeLeft: '30',
-  // );
-
   Widget _content = FractionallySizedBox(
       heightFactor: 0.75,
       widthFactor: 0.75,
@@ -305,10 +300,10 @@ class _GameScreenState extends State<GameScreen> {
           _tilt.stopListening();
           _cameraController?.stopVideoRecording();
 
-          final responseProvider =
+          final resultProvider =
               Provider.of<Results>(context, listen: false);
-          responseProvider.responses = responses;
-          responseProvider.score = _score;
+          resultProvider.responses = responses;
+          resultProvider.score = _score;
 
           HapticFeedback.vibrate();
           _setContent(

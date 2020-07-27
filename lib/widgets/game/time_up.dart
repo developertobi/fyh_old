@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:naija_charades/screens/home_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'results_bottom_sheet.dart';
-
 class TimeUp extends StatelessWidget {
   final Map<String, PermissionStatus> statuses;
 

@@ -90,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen>
       showDialog(
         context: context,
         builder: (_) => ResultsDialog(showVideo: true),
+        barrierDismissible: false,
       );
     }
   }
