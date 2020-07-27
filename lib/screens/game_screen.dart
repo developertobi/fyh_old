@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:async';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -35,7 +36,8 @@ class GameScreen extends StatefulWidget {
   _GameScreenState createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends State<GameScreen>
+    with AfterLayoutMixin<GameScreen> {
   bool contentIsStatus = false;
   CameraController _cameraController;
   PermissionStatus _cameraPermissionStatus;
@@ -72,28 +74,36 @@ class _GameScreenState extends State<GameScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Image.asset('assets/arrow-up.png'),
-              SizedBox(width: 10),
-              Expanded(
-                child: AutoSizeText(
-                  'Tilt Up for Correct',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              Expanded(
-                child: AutoSizeText(
-                  'Tilt Up for Correct',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              SizedBox(width: 10),
               Image.asset('assets/arrow-down.png'),
+              SizedBox(width: 10),
+              Expanded(
+                child: AutoSizeText(
+                  'Tilt down for Correct',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 20),
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(width: 20),
+              Expanded(
+                child: AutoSizeText(
+                  'Tilt up for Pass',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontSize: 20),
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(width: 10),
+              Image.asset('assets/arrow-up.png'),
             ],
           )
         ],
       ));
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    _initWords();
+  }
 
   @override
   void initState() {
@@ -102,7 +112,7 @@ class _GameScreenState extends State<GameScreen> {
     ]);
 
     _initCameraRequirements();
-    _initWords();
+
     _startListeningForHorizontalPhonePosition();
     _initTilt();
 
@@ -214,11 +224,11 @@ class _GameScreenState extends State<GameScreen> {
 
   void _initTilt() {
     _tilt = Tilt.waitForStart(
-      onTiltUp: () {
-        _onTilt(TiltAction.up);
+      onTiltUp: () => _onTilt(TiltAction.up),
+      onTiltDown: () {
+        _onTilt(TiltAction.down);
         _score++;
       },
-      onTiltDown: () => _onTilt(TiltAction.down),
       onNormal: () {
         contentIsStatus = false;
         _setContent(
@@ -234,24 +244,25 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _initWords() {
-    Future.delayed(Duration.zero, () {
-      Map<String, List> args = ModalRoute.of(context).settings.arguments;
-      words = args['words'];
-      _randomizeWordIndex();
-    });
+    Map<String, List> args = ModalRoute.of(context).settings.arguments;
+    words = args['words'];
+
+    // Provide words to results for looping
+    Provider.of<Results>(context, listen: false).words = words;
+    _randomizeWordIndex();
   }
 
   void _onTilt(TiltAction direction) {
     contentIsStatus = true;
-    _setContent(Status(isCorrect: direction == TiltAction.up ? true : false));
+    _setContent(Status(isCorrect: direction == TiltAction.down));
 
     direction == TiltAction.up
-        ? _changeBackgroundColor(kCorrectColor)
-        : _changeBackgroundColor(kPassColor);
+        ? _changeBackgroundColor(kPassColor)
+        : _changeBackgroundColor(kCorrectColor);
 
     responses.add(
       Response(
-        isCorrect: direction == TiltAction.up,
+        isCorrect: direction == TiltAction.down,
         word: words[wordsIndex],
       ),
     );
@@ -300,8 +311,7 @@ class _GameScreenState extends State<GameScreen> {
           _tilt.stopListening();
           _cameraController?.stopVideoRecording();
 
-          final resultProvider =
-              Provider.of<Results>(context, listen: false);
+          final resultProvider = Provider.of<Results>(context, listen: false);
           resultProvider.responses = responses;
           resultProvider.score = _score;
 

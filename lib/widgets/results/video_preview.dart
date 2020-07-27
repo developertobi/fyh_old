@@ -80,7 +80,7 @@ class _VideoPreviewState extends State<VideoPreview> {
                                   },
                                   icon: Icon(
                                     FontAwesome5Solid.play,
-                                    color: Colors.blue,
+                                    color: Colors.black,
                                     size: 60,
                                   ),
                                 ),

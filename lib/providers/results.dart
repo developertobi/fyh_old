@@ -5,4 +5,5 @@ class Results {
   int score;
   String deckImageUrl;
   int colorHex;
+  List words;
 }

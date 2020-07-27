@@ -3,19 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:naija_charades/constants.dart';
-import 'package:naija_charades/models/response.dart';
 import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/providers/video_file.dart';
-import 'package:naija_charades/widgets/results/replay_button.dart';
-import 'package:naija_charades/widgets/results/save_video_button.dart';
+import 'package:naija_charades/screens/game_screen.dart';
+import 'package:naija_charades/widgets/results/result_dialog_button.dart';
 import 'package:naija_charades/widgets/results/video_preview.dart';
 import 'package:naija_charades/widgets/results/close_button.dart';
 import 'package:naija_charades/widgets/results/responses.dart';
-import 'package:naija_charades/widgets/shared/round_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-
-import '../../colors.dart' as AppColors;
 
 class ResultsDialog extends StatelessWidget {
   final bool showVideo;
@@ -88,8 +84,17 @@ class ResultsDialog extends StatelessWidget {
                           buttonPadding: EdgeInsets.all(0),
                           alignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            SaveVideoButton(videoFilePath),
-                            ReplayButton(),
+                            ResultsDialogButton(
+                              icon: Icons.save_alt,
+                              onPressed: () =>
+                                  _saveVideo(context, videoFilePath),
+                              text: 'Save Video',
+                            ),
+                            ResultsDialogButton(
+                              icon: Icons.loop,
+                              onPressed: () => _playAgain(context),
+                              text: 'Play Again',
+                            ),
                           ],
                         )
                       ],
@@ -103,5 +108,41 @@ class ResultsDialog extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _playAgain(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      GameScreen.routeName,
+      (route) => false,
+      arguments: {
+        'words': Provider.of<Results>(context, listen: false).words,
+      },
+    );
+  }
+
+  void _saveVideo(BuildContext context, String videoFilePath) async {
+    HapticFeedback.mediumImpact();
+
+    await Permission.photos.request();
+
+    if (await Permission.photos.isGranted) {
+      GallerySaver.saveVideo(videoFilePath)
+          .then((_) => _buildFlushBar('Video Saved!', context));
+    } else {
+      _buildFlushBar('Video not saved!', context);
+    }
+  }
+
+  _buildFlushBar(String messageText, BuildContext context) {
+    Flushbar(
+      messageText: Text(
+        messageText,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 20, color: Colors.white),
+      ),
+      duration: Duration(seconds: 1),
+      animationDuration: Duration(milliseconds: 500),
+      flushbarStyle: FlushbarStyle.GROUNDED,
+    )..show(context);
   }
 }
