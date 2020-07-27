@@ -3,29 +3,21 @@ import 'package:flutter/services.dart';
 import 'package:naija_charades/models/deck.dart';
 import 'package:provider/provider.dart';
 
-import '../../colors.dart' as AppColors;
-import 'deck_info_dialog.dart';
-import 'deck_wallpaper.dart';
+import 'deck_alert_dialog.dart';
 
 class DeckCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: AppColors.cadetBlueCrayola,
-      margin: const EdgeInsets.all(10.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: InkWell(
-        onTap: () {
-          HapticFeedback.mediumImpact();
-          var deck = Provider.of<Deck>(context, listen: false);
-          _showDeckInfoDialog(context, deck);
-        },
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          width: 140,
-          child: DeckWallpaper(),
+    var deck = Provider.of<Deck>(context, listen: false);
+    return InkWell(
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        _showDeckInfoDialog(context, deck);
+      },
+      child: ClipRect(
+        child: Image.network(
+          deck.backgroundUrl,
+          fit: BoxFit.contain,
         ),
       ),
     );
@@ -41,7 +33,7 @@ class DeckCard extends StatelessWidget {
             opacity: a1.value,
             child: Provider<Deck>.value(
               value: deck,
-              child: DeckInfoDialog(),
+              child: DeckAlertDialog(),
             ),
           ),
         );

@@ -1,40 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:naija_charades/models/category.dart';
 import 'package:naija_charades/models/deck.dart';
 
 class FirestoreData {
-  List<Category> data;
+  List<Deck> decks;
 
-  Future<List<Category>> updateData() async {
-    List<Category> categories = [];
+  Future<List<Deck>> updateData() async {
+    List<Deck> currentDecks = [];
 
     final snapshot =
         await Firestore.instance.collection('app-data').getDocuments();
 
-    for (var firestoreCategory in snapshot.documents) {
-      var firestoreDecks = firestoreCategory.data['decks'];
-      List<Deck> decks = [];
-
-      for (var deck in firestoreDecks) {
-        decks.add(
-          Deck(
-            title: deck['title'],
-            description: deck['description'],
-            words: deck['words'],
-            iconCodePoint: deck['icon_codepoint'],
-          ),
-        );
-      }
-
-      categories.add(
-        Category(
-          title: firestoreCategory.documentID,
-          decks: decks,
+    for (var document in snapshot.documents) {
+      var deck = document.data;
+      currentDecks.add(
+        Deck(
+          backgroundUrl: deck['background_url'],
+          description: deck['description'],
+          title: deck['title'],
+          words: deck['words'],
+          color: int.parse(deck['color']),
         ),
       );
     }
 
-    data = categories;
-    return categories;
+    decks = currentDecks;
+    return currentDecks;
   }
 }

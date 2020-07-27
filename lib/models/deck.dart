@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 
 class Deck {
   final String title;
+  final String backgroundUrl;
   final String description;
-  final int iconCodePoint;
   final List words;
+  final int color;
 
   const Deck({
     @required this.title,
+    @required this.backgroundUrl,
     @required this.description,
-    @required this.iconCodePoint,
     @required this.words,
+    @required this.color,
   });
 }

@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:naija_charades/providers/firestore_data.dart';
-import 'package:naija_charades/providers/responses.dart';
+import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/providers/video_file.dart';
 import 'package:naija_charades/providers/words.dart';
 import 'package:naija_charades/screens/game_screen.dart';
@@ -23,7 +23,7 @@ class NaijaCharadesApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (_) => Words()),
-        Provider(create: (_) => Responses()),
+        Provider(create: (_) => Results()),
         Provider(create: (_) => VideoFile()),
         Provider(create: (_) => FirestoreData())
       ],
@@ -31,6 +31,7 @@ class NaijaCharadesApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Naija Charades',
         initialRoute: HomeScreen.routeName,
+        theme: ThemeData.dark(),
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),
           GameScreen.routeName: (_) => GameScreen(),

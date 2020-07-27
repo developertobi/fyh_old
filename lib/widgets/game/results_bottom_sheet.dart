@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
-import 'package:naija_charades/providers/responses.dart';
+import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/providers/video_file.dart';
-import 'package:naija_charades/widgets/home/round_button.dart';
+import 'package:naija_charades/widgets/shared/round_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,7 @@ class ResultsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final responseProvider = Provider.of<Responses>(context, listen: false);
+    final responseProvider = Provider.of<Results>(context, listen: false);
     final videoFilePath = Provider.of<VideoFile>(context).path;
 
     return Container(
@@ -99,7 +99,7 @@ class ResultsBottomSheet extends StatelessWidget {
                     : MainAxisAlignment.center,
                 children: <Widget>[
                   RoundButton(
-                    buttonText: 'All Decks',
+                    // buttonText: 'All Decks',
                     onPressed: () {
                       HapticFeedback.mediumImpact();
                       Navigator.pop(context);
@@ -107,8 +107,8 @@ class ResultsBottomSheet extends StatelessWidget {
                   ),
                   if (showVideo)
                     RoundButton(
-                      buttonText: 'Save Video',
-                      isFocused: true,
+                      // buttonText: 'Save Video',
+                      // isFocused: true,
                       onPressed: () async {
                         HapticFeedback.mediumImpact();
 

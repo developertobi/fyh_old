@@ -1,18 +1,32 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:naija_charades/models/category.dart';
+import 'package:naija_charades/models/deck.dart';
 import 'package:naija_charades/providers/firestore_data.dart';
+import 'package:naija_charades/widgets/deck/deck_builder.dart';
 
-import 'package:naija_charades/widgets/home/category_decks.dart';
 import 'package:naija_charades/widgets/home/error_message.dart';
+import 'package:naija_charades/widgets/home/loading.dart';
+import 'package:naija_charades/widgets/results/results_dialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../colors.dart' as AppColors;
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const routeName = '/';
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with AfterLayoutMixin<HomeScreen> {
+  @override
+  void afterFirstLayout(BuildContext context) {
+    _showResults(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +36,13 @@ class HomeScreen extends StatelessWidget {
     ]);
 
     return Scaffold(
-      backgroundColor: AppColors.prussianBlue,
+      backgroundColor: Colors.black,
       body: Stack(
         children: <Widget>[
           Container(
             height: double.infinity,
             width: double.infinity,
-            color: Color(0xFF191A1C),
+            color: Colors.black,
             child: Center(
               child: Image.asset('assets/logo.jpg'),
             ),
@@ -38,49 +52,46 @@ class HomeScreen extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Container(
-                  color: AppColors.prussianBlue.withOpacity(0.9),
-                  padding: EdgeInsets.symmetric(vertical: 70, horizontal: 20),
+                  color: Colors.black.withOpacity(0.7),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Consumer<FirestoreData>(
-                    builder: (_, firestoreData, __) {
-                      return FutureBuilder<List<Category>>(
-                        future: firestoreData.updateData(),
-                        builder: (_, snapshot) {
-                          if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                            var categories = snapshot.data;
-                            return ListView.builder(
-                              itemCount: categories.length,
-                              itemBuilder: (_, i) {
-                                return CategoryDecks(
-                                  categoryTitle: categories[i].title,
-                                  decks: categories[i].decks,
-                                );
-                              },
-                            );
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return ErrorMsg();
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.white,
-                                strokeWidth: 10,
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                    AppColors.prussianBlue),
-                              ),
-                            );
-                          }
-                        },
-                      );
-                    },
+                    builder: (_, firestoreData, __) =>
+                        FutureBuilder<List<Deck>>(
+                      future: firestoreData.updateData(),
+                      builder: (_, snapshot) {
+                        if (snapshot.hasData && snapshot.data.isNotEmpty) {
+                          var decks = snapshot.data;
+                          return DeckBuilder(decks: decks);
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.done) {
+                          return ErrorMsg();
+                        } else {
+                          return Loading();
+                        }
+                      },
+                    ),
                   ),
                 );
               }
-              return Container(color: AppColors.prussianBlue.withOpacity(0.9));
+              // While _requestAllPermissions hasnt completed execution
+              return Container(
+                color: AppColors.prussianBlue.withOpacity(0.9),
+              );
             },
           ),
         ],
       ),
     );
+  }
+
+  void _showResults(BuildContext context) async {
+    Map<String, String> args = ModalRoute.of(context).settings.arguments;
+    if (args != null) {
+      showDialog(
+        context: context,
+        builder: (_) => ResultsDialog(showVideo: true),
+      );
+    }
   }
 
   Future<void> _requestAllPermissions(BuildContext context) async {

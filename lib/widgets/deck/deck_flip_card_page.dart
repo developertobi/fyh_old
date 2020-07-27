@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../colors.dart' as AppColors;
+import 'package:naija_charades/models/deck.dart';
+import 'package:provider/provider.dart';
 
 class DeckFlipCardPage extends StatelessWidget {
   final Widget child;
@@ -8,12 +8,13 @@ class DeckFlipCardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var color = Provider.of<Deck>(context, listen: false).color;
     return Container(
-      height: 300,
+      height: 400,
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.cadetBlueCrayola,
+        color: Color(color),
       ),
       child: child,
     );

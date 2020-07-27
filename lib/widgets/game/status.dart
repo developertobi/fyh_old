@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class Status extends StatelessWidget {
   final bool isCorrect;
@@ -10,22 +9,15 @@ class Status extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // changeBackgroundColor(isCorrect);
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          isCorrect ? 'Correct' : 'Wrong',
-          style: TextStyle(fontSize: 50, color: Colors.white),
-        ),
-        SizedBox(height: 20),
-        Icon(
-          isCorrect ? AntDesign.checkcircleo : AntDesign.closecircleo,
+    return Center(
+      child: Text(
+        isCorrect ? 'Correct' : 'Pass',
+        style: TextStyle(
+          fontSize: 50,
           color: Colors.white,
-          size: 70,
+          fontWeight: FontWeight.bold,
         ),
-      ],
+      ),
     );
   }
 }

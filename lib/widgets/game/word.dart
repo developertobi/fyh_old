@@ -14,18 +14,24 @@ class Word extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
+      alignment: Alignment.center,
       children: <Widget>[
+        Positioned(
+          top: 10,
+          child: Text(
+            '0:$timeLeft',
+            style: TextStyle(
+                fontSize: isLast5Seconds ? 50 : 24, color: Colors.white),
+          ),
+        ),
         Text(
           answer,
-          style: TextStyle(fontSize: 50, color: Colors.white),
-        ),
-        SizedBox(height: 50),
-        Text(
-          '0:$timeLeft',
           style: TextStyle(
-              fontSize: isLast5Seconds ? 50 : 24, color: Colors.white),
+            fontSize: 50,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );

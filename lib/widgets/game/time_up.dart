@@ -21,6 +21,7 @@ class TimeUp extends StatelessWidget {
         textStyle: TextStyle(
           fontSize: 70,
           color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
         onFinished: () {
           SystemChrome.setPreferredOrientations([
@@ -28,16 +29,24 @@ class TimeUp extends StatelessWidget {
             DeviceOrientation.portraitDown,
           ]);
 
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return ResultsBottomSheet(
-                showVideo: statuses['camera'].isGranted &&
-                    statuses['microphone'].isGranted,
-              );
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            HomeScreen.routeName,
+            (route) => false,
+            arguments: {
+              'results': "",
             },
-          ).then((_) =>
-              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName));
+          );
+
+          // showModalBottomSheet(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return ResultsBottomSheet(
+          //       showVideo: statuses['camera'].isGranted &&
+          //           statuses['microphone'].isGranted,
+          //     );
+          //   },
+          // ).then((_) =>
+          //     Navigator.of(context).pushReplacementNamed(HomeScreen.routeName));
         },
       ),
     );

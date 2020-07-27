@@ -4,13 +4,15 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:naija_charades/constants.dart';
 import 'package:naija_charades/main.dart'; // imported this bc of cameras var. kinda hacky
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:naija_charades/colors.dart' as AppColors;
 import 'package:naija_charades/models/response.dart';
-import 'package:naija_charades/providers/responses.dart';
+import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/providers/video_file.dart';
+import 'package:naija_charades/screens/home_screen.dart';
 import 'package:naija_charades/widgets/game/ready_timer.dart';
 import 'package:naija_charades/widgets/game/status.dart';
 import 'package:naija_charades/widgets/game/time_up.dart';
@@ -46,18 +48,57 @@ class _GameScreenState extends State<GameScreen> {
   int timeLeft = 10;
   int _score = 0;
   StreamSubscription _streamSubscription;
-  Color _backgroundColor = AppColors.prussianBlue;
-  Widget _content = const Center(
-      child: AutoSizeText(
-    'Place on ForeHead',
-    style: TextStyle(fontSize: 70, color: Colors.white),
-    minFontSize: 20,
-    maxLines: 1,
-    overflow: TextOverflow.ellipsis,
-  ));
+  Color _backgroundColor = Colors.black;
 
-  // Text('Place on ForeHead',
-  //     style: TextStyle(fontSize: 70, color: Colors.white)));
+  // Widget _content = Word(
+  //   answer: "Test",
+  //   timeLeft: '30',
+  // );
+
+  Widget _content = FractionallySizedBox(
+      heightFactor: 0.75,
+      widthFactor: 0.75,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          AutoSizeText(
+            'Place on ForeHead',
+            style: TextStyle(
+              fontSize: 70,
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+            ),
+            minFontSize: 20,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Image.asset('assets/arrow-up.png'),
+              SizedBox(width: 10),
+              Expanded(
+                child: AutoSizeText(
+                  'Tilt Up for Correct',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+              Expanded(
+                child: AutoSizeText(
+                  'Tilt Up for Correct',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+              SizedBox(width: 10),
+              Image.asset('assets/arrow-down.png'),
+            ],
+          )
+        ],
+      ));
 
   @override
   void initState() {
@@ -113,6 +154,27 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ),
         ),
+        Positioned(
+          top: 50,
+          left: 50,
+          child: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              icon: Icon(
+                Feather.arrow_left_circle,
+                size: 60,
+              ),
+              onPressed: () {
+                // Explore this function. It's Hacky
+                setState(() {
+                  timeLeft = 0;
+                });
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    HomeScreen.routeName, (route) => false);
+              },
+            ),
+          ),
+        )
       ],
     );
   }
@@ -171,7 +233,7 @@ class _GameScreenState extends State<GameScreen> {
             isLast5Seconds: timeLeft < 6,
           ),
         );
-        _changeBackgroundColor(AppColors.prussianBlue);
+        _changeBackgroundColor(Colors.black);
       },
     );
   }
@@ -189,8 +251,8 @@ class _GameScreenState extends State<GameScreen> {
     _setContent(Status(isCorrect: direction == TiltAction.up ? true : false));
 
     direction == TiltAction.up
-        ? _changeBackgroundColor(AppColors.vagasGold)
-        : _changeBackgroundColor(AppColors.persimmon);
+        ? _changeBackgroundColor(kCorrectColor)
+        : _changeBackgroundColor(kPassColor);
 
     responses.add(
       Response(
@@ -244,7 +306,7 @@ class _GameScreenState extends State<GameScreen> {
           _cameraController?.stopVideoRecording();
 
           final responseProvider =
-              Provider.of<Responses>(context, listen: false);
+              Provider.of<Results>(context, listen: false);
           responseProvider.responses = responses;
           responseProvider.score = _score;
 
@@ -255,7 +317,7 @@ class _GameScreenState extends State<GameScreen> {
               'microphone': _micPermissionStatus,
             }),
           );
-          _changeBackgroundColor(AppColors.rossoCorsa);
+          _changeBackgroundColor(kTimeUpColor);
         } else {
           timeLeft -= 1;
           bool isLast5sec = false;

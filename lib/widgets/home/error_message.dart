@@ -1,7 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:naija_charades/screens/home_screen.dart';
-import 'package:naija_charades/widgets/home/round_button.dart';
+import 'package:naija_charades/widgets/shared/round_button.dart';
 import 'package:naija_charades/colors.dart' as AppColors;
 
 class ErrorMsg extends StatelessWidget {
@@ -18,9 +18,7 @@ class ErrorMsg extends StatelessWidget {
               'Please check internet connection',
             ],
             textStyle: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w700,
-                color: Colors.white),
+                fontSize: 25, fontWeight: FontWeight.w700, color: Colors.white),
             textAlign: TextAlign.center,
             alignment: AlignmentDirectional.center,
             repeatForever: true,
@@ -29,8 +27,7 @@ class ErrorMsg extends StatelessWidget {
             height: 20,
           ),
           RoundButton(
-            buttonText: 'Try Again',
-            // isFocused: true,
+            child: Text('Try Again'),
             onPressed: () => Navigator.of(context)
                 .pushReplacementNamed(HomeScreen.routeName),
           ),

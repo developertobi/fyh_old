@@ -1,6 +1,8 @@
 import 'package:naija_charades/models/response.dart';
 
-class Responses {
+class Results {
   List<Response> responses;
-  int score; 
+  int score;
+  String deckImageUrl;
+  String colorHex;
 }
