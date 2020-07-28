@@ -22,6 +22,7 @@ class DeckAlertDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: Colors.transparent,
       contentPadding: EdgeInsets.all(0),
+      insetPadding: EdgeInsets.all(15),
       content: FlipCard(
         key: cardKey,
         flipOnTouch: false,

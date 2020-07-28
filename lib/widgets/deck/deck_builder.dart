@@ -15,19 +15,23 @@ class DeckBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-        itemCount: decks.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: kDeckCardAspectRatio,
-          crossAxisSpacing: 15,
-          mainAxisSpacing: 15,
-        ),
-        itemBuilder: (_, i) {
-          return Provider<Deck>.value(
-            value: decks[i],
-            child: DeckCard(),
-          );
-        });
+    decks.shuffle();
+    return Padding(
+      padding: EdgeInsets.only(top: 20),
+      child: GridView.builder(
+          itemCount: decks.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: kDeckCardAspectRatio,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 15,
+          ),
+          itemBuilder: (_, i) {
+            return Provider<Deck>.value(
+              value: decks[i],
+              child: DeckCard(),
+            );
+          }),
+    );
   }
 }

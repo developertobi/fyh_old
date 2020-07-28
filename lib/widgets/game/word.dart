@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:naija_charades/constants.dart';
 
 class Word extends StatelessWidget {
   final String answer;
@@ -21,15 +22,14 @@ class Word extends StatelessWidget {
           top: 10,
           child: Text(
             '0:$timeLeft',
-            style: TextStyle(
-                fontSize: isLast5Seconds ? 50 : 24, color: Colors.white),
+            style:
+                kNunitoTextStyle.copyWith(fontSize: isLast5Seconds ? 50 : 24),
           ),
         ),
         Text(
           answer,
-          style: TextStyle(
+          style: kNunitoTextStyle.copyWith(
             fontSize: 50,
-            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),

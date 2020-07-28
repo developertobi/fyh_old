@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:naija_charades/constants.dart';
 
 class Status extends StatelessWidget {
   final bool isCorrect;
@@ -11,11 +12,11 @@ class Status extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        isCorrect ? 'Correct' : 'Pass',
-        style: TextStyle(
+        isCorrect ? 'CORRECT' : 'PASS',
+        style: kNunitoTextStyle.copyWith(
           fontSize: 50,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w900,
+          color: Colors.black,
         ),
       ),
     );

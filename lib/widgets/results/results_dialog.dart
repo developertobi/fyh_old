@@ -41,7 +41,7 @@ class ResultsDialog extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 70,
+                  height: 90,
                   child: AspectRatio(
                       aspectRatio: kDeckCardAspectRatio,
                       child: Image.network(resultsProvider.deckImageUrl)),
@@ -51,22 +51,25 @@ class ResultsDialog extends StatelessWidget {
                     style: TextStyle(color: Colors.black),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'You answered ',
-                        style: TextStyle(
-                          fontSize: 18,
+                        text: 'You got ',
+                        style: kNunitoTextStyle.copyWith(
+                          fontSize: 30,
+                          color: Colors.black,
                         ),
                       ),
                       TextSpan(
                         text: resultsProvider.score.toString(),
-                        style: TextStyle(
+                        style: kNunitoTextStyle.copyWith(
                           fontSize: 60,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.black,
                         ),
                       ),
                       TextSpan(
-                        text: 'right!',
-                        style: TextStyle(
-                          fontSize: 18,
+                        text: ' right!',
+                        style: kNunitoTextStyle.copyWith(
+                          fontSize: 30,
+                          color: Colors.black,
                         ),
                       ),
                     ],
@@ -84,12 +87,13 @@ class ResultsDialog extends StatelessWidget {
                           buttonPadding: EdgeInsets.all(0),
                           alignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            ResultsDialogButton(
-                              icon: Icons.save_alt,
-                              onPressed: () =>
-                                  _saveVideo(context, videoFilePath),
-                              text: 'Save Video',
-                            ),
+                            if (showVideo)
+                              ResultsDialogButton(
+                                icon: Icons.save_alt,
+                                onPressed: () =>
+                                    _saveVideo(context, videoFilePath),
+                                text: 'Save Video',
+                              ),
                             ResultsDialogButton(
                               icon: Icons.loop,
                               onPressed: () => _playAgain(context),

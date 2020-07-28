@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/models/deck.dart';
 import 'package:naija_charades/providers/firestore_data.dart';
+import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/widgets/deck/deck_builder.dart';
 
 import 'package:naija_charades/widgets/home/error_message.dart';
@@ -86,10 +87,17 @@ class _HomeScreenState extends State<HomeScreen>
 
   void _showResults(BuildContext context) async {
     Map<String, String> args = ModalRoute.of(context).settings.arguments;
+    var permissionStatuses =
+        Provider.of<Results>(context, listen: false).permissionStatuses;
+
     if (args != null) {
+      print('got here');
       showDialog(
         context: context,
-        builder: (_) => ResultsDialog(showVideo: true),
+        builder: (_) => ResultsDialog(
+          showVideo: permissionStatuses['camera'].isGranted &&
+              permissionStatuses['microphone'].isGranted,
+        ),
         barrierDismissible: false,
       );
     }

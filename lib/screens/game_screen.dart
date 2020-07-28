@@ -59,12 +59,14 @@ class _GameScreenState extends State<GameScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           AutoSizeText(
-            'Place on ForeHead',
-            style: TextStyle(
-              fontSize: 70,
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-            ),
+            'Place on ForeHead'.toUpperCase(),
+            style: kNunitoTextStyle.copyWith(
+                fontSize: 70, fontWeight: FontWeight.w900),
+            // style: TextStyle(
+            //   fontSize: 70,
+            //   color: Colors.white,
+            //   fontWeight: FontWeight.w900,
+            // ),
             minFontSize: 20,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -80,8 +82,8 @@ class _GameScreenState extends State<GameScreen>
                 child: AutoSizeText(
                   'Tilt down for Correct',
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 20),
                   maxLines: 1,
+                  style: kNunitoTextStyle.copyWith(fontSize: 20),
                 ),
               ),
               SizedBox(width: 20),
@@ -89,7 +91,7 @@ class _GameScreenState extends State<GameScreen>
                 child: AutoSizeText(
                   'Tilt up for Pass',
                   textAlign: TextAlign.right,
-                  style: TextStyle(fontSize: 20),
+                  style: kNunitoTextStyle.copyWith(fontSize: 20),
                   maxLines: 1,
                 ),
               ),
@@ -101,22 +103,19 @@ class _GameScreenState extends State<GameScreen>
       ));
 
   @override
-  void afterFirstLayout(BuildContext context) {
-    _initWords();
-  }
-
-  @override
   void initState() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
     ]);
-
     _initCameraRequirements();
-
     _startListeningForHorizontalPhonePosition();
     _initTilt();
-
     super.initState();
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    _initWords();
   }
 
   @override
@@ -160,14 +159,14 @@ class _GameScreenState extends State<GameScreen>
           ),
         ),
         Positioned(
-          top: 50,
+          top: 30,
           left: 50,
           child: Material(
             color: Colors.transparent,
             child: IconButton(
               icon: Icon(
                 Feather.arrow_left_circle,
-                size: 60,
+                size: 40,
               ),
               onPressed: () {
                 // Explore this function. It's Hacky
@@ -193,6 +192,11 @@ class _GameScreenState extends State<GameScreen>
   void _initCameraRequirements() async {
     _cameraPermissionStatus = await Permission.camera.status;
     _micPermissionStatus = await Permission.microphone.status;
+
+    Provider.of<Results>(context, listen: false).permissionStatuses = {
+      'camera': _cameraPermissionStatus,
+      'microphone': _micPermissionStatus,
+    };
 
     if (_cameraPermissionStatus.isGranted && _micPermissionStatus.isGranted) {
       // Init camera
@@ -246,11 +250,18 @@ class _GameScreenState extends State<GameScreen>
   void _initWords() {
     Map<String, List> args = ModalRoute.of(context).settings.arguments;
     words = args['words'];
-
-    // Provide words to results for looping
     Provider.of<Results>(context, listen: false).words = words;
     _randomizeWordIndex();
   }
+
+  // void _initResultsProvider() {
+  //   var resultProvider = Provider.of<Results>(context, listen: false);
+  //   resultProvider.words = words;
+  //   resultProvider.permissionStatuses = {
+  //     'camera': _cameraPermissionStatus,
+  //     'microphone': _micPermissionStatus,
+  //   };
+  // }
 
   void _onTilt(TiltAction direction) {
     contentIsStatus = true;
@@ -317,10 +328,7 @@ class _GameScreenState extends State<GameScreen>
 
           HapticFeedback.vibrate();
           _setContent(
-            TimeUp({
-              'camera': _cameraPermissionStatus,
-              'microphone': _micPermissionStatus,
-            }),
+            TimeUp(),
           );
           _changeBackgroundColor(kTimeUpColor);
         } else {

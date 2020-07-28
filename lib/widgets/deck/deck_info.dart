@@ -16,19 +16,22 @@ class DeckInfo extends StatelessWidget {
       children: <Widget>[
         Center(
           child: Container(
-            height: 100,
+            height: 130,
             child: AspectRatio(
                 aspectRatio: kDeckCardAspectRatio,
                 child: Image.network(deck.backgroundUrl)),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         Expanded(
           child: SingleChildScrollView(
-            child: _buildText(
-              context: context,
-              text: deck.description,
-              fontSize: 18,
+            child: Text(
+              deck.description,
+              textAlign: TextAlign.justify,
+              style: kNunitoTextStyle.copyWith(
+                fontSize: 16,
+                color: Colors.black,
+              ),
             ),
           ),
         ),
@@ -38,10 +41,8 @@ class DeckInfo extends StatelessWidget {
             RoundButton(
               child: Text(
                 'Play Now',
-                style: TextStyle(
+                style: kNunitoTextStyle.copyWith(
                   fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
                 ),
               ),
               onPressed: () {
@@ -61,16 +62,6 @@ class DeckInfo extends StatelessWidget {
           ],
         )
       ],
-    );
-  }
-
-  Text _buildText({BuildContext context, String text, double fontSize}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: fontSize,
-        color: Colors.black,
-      ),
     );
   }
 }
