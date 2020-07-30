@@ -49,7 +49,7 @@ class _GameScreenState extends State<GameScreen>
   List words = [];
   List<Response> responses = [];
   Tilt _tilt;
-  int timeLeft = 10;
+  int timeLeft = 60;
   int _score = 0;
   StreamSubscription _streamSubscription;
   Color _backgroundColor = Colors.black;
@@ -260,8 +260,6 @@ class _GameScreenState extends State<GameScreen>
     //     ? SoundController.play('pass-sound.wav')
     //     : SoundController.play('correct-sound.wav');
 
-    print("When Status is shown : ${_cameraController.value.hasError}");
-
     direction == TiltAction.up
         ? _changeBackgroundColor(kPassColor)
         : _changeBackgroundColor(kCorrectColor);
@@ -301,7 +299,6 @@ class _GameScreenState extends State<GameScreen>
               _startTimerCountdown();
               _tilt.startListening();
               _cameraController?.startVideoRecording(_videoFilePath);
-              print("Initial : ${_cameraController.value.hasError}");
             },
           ),
         );
@@ -336,7 +333,7 @@ class _GameScreenState extends State<GameScreen>
           if (timeLeft < 6) {
             if (timeLeft == 4)
               // SoundController.play('5-sec-countdown-sound.wav');
-            HapticFeedback.vibrate();
+              HapticFeedback.vibrate();
             isLast5sec = true;
           }
 

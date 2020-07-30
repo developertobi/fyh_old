@@ -2,13 +2,15 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:naija_charades/screens/home_screen.dart';
 import 'package:naija_charades/widgets/shared/round_button.dart';
-import 'package:naija_charades/colors.dart' as AppColors;
+
+import '../../colors.dart' as AppColors;
+
 
 class ErrorMsg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.prussianBlue,
+      color: Colors.black,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -28,6 +30,7 @@ class ErrorMsg extends StatelessWidget {
           ),
           RoundButton(
             child: Text('Try Again'),
+            color: AppColors.prussianBlue,
             onPressed: () => Navigator.of(context)
                 .pushReplacementNamed(HomeScreen.routeName),
           ),

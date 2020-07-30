@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
               }
               // While _requestAllPermissions hasnt completed execution
               return Container(
-                color: AppColors.prussianBlue.withOpacity(0.9),
+                color: Colors.black.withOpacity(0.9),
               );
             },
           ),
@@ -91,7 +91,6 @@ class _HomeScreenState extends State<HomeScreen>
         Provider.of<Results>(context, listen: false).permissionStatuses;
 
     if (args != null) {
-      print('got here');
       showDialog(
         context: context,
         builder: (_) => ResultsDialog(

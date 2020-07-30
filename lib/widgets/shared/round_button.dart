@@ -4,11 +4,13 @@ class RoundButton extends StatelessWidget {
   final Function onPressed;
   final Widget child;
   final double width;
+  final Color color;
 
   RoundButton({
     @required this.onPressed,
     @required this.child,
     this.width = 230,
+    this.color = Colors.black,
   });
 
   @override
@@ -16,7 +18,7 @@ class RoundButton extends StatelessWidget {
     return RaisedButton(
       onPressed: onPressed,
       disabledTextColor: Colors.white,
-      color: Colors.black,
+      color: color,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
