@@ -11,6 +11,8 @@ import 'package:naija_charades/main.dart'; // imported this bc of cameras var. k
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/models/response.dart';
+import 'package:naija_charades/models/sound_controller.dart';
+// import 'package:naija_charades/models/sound_controller.dart';
 import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/providers/video_file.dart';
 import 'package:naija_charades/screens/home_screen.dart';
@@ -62,11 +64,6 @@ class _GameScreenState extends State<GameScreen>
             'Place on ForeHead'.toUpperCase(),
             style: kNunitoTextStyle.copyWith(
                 fontSize: 70, fontWeight: FontWeight.w900),
-            // style: TextStyle(
-            //   fontSize: 70,
-            //   color: Colors.white,
-            //   fontWeight: FontWeight.w900,
-            // ),
             minFontSize: 20,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -254,18 +251,16 @@ class _GameScreenState extends State<GameScreen>
     _randomizeWordIndex();
   }
 
-  // void _initResultsProvider() {
-  //   var resultProvider = Provider.of<Results>(context, listen: false);
-  //   resultProvider.words = words;
-  //   resultProvider.permissionStatuses = {
-  //     'camera': _cameraPermissionStatus,
-  //     'microphone': _micPermissionStatus,
-  //   };
-  // }
-
   void _onTilt(TiltAction direction) {
     contentIsStatus = true;
+
     _setContent(Status(isCorrect: direction == TiltAction.down));
+
+    // direction == TiltAction.up
+    //     ? SoundController.play('pass-sound.wav')
+    //     : SoundController.play('correct-sound.wav');
+
+    print("When Status is shown : ${_cameraController.value.hasError}");
 
     direction == TiltAction.up
         ? _changeBackgroundColor(kPassColor)
@@ -298,6 +293,7 @@ class _GameScreenState extends State<GameScreen>
     _streamSubscription =
         accelerometerEvents.listen((AccelerometerEvent event) {
       if ((event.x - gravity).abs() < 2) {
+        SoundController.play('3-sec-countdown-sound.wav');
         _setContent(
           ReadyTimer(
             onReady: () {
@@ -305,6 +301,7 @@ class _GameScreenState extends State<GameScreen>
               _startTimerCountdown();
               _tilt.startListening();
               _cameraController?.startVideoRecording(_videoFilePath);
+              print("Initial : ${_cameraController.value.hasError}");
             },
           ),
         );
@@ -327,6 +324,7 @@ class _GameScreenState extends State<GameScreen>
           resultProvider.score = _score;
 
           HapticFeedback.vibrate();
+          SoundController.play('timeup-sound.wav');
           _setContent(
             TimeUp(),
           );
@@ -336,6 +334,8 @@ class _GameScreenState extends State<GameScreen>
           bool isLast5sec = false;
 
           if (timeLeft < 6) {
+            if (timeLeft == 4)
+              // SoundController.play('5-sec-countdown-sound.wav');
             HapticFeedback.vibrate();
             isLast5sec = true;
           }

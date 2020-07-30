@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:naija_charades/constants.dart';
 import 'package:naija_charades/models/deck.dart';
+import 'package:naija_charades/models/sound_controller.dart';
 import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/screens/game_screen.dart';
 import 'package:naija_charades/widgets/shared/round_button.dart';
@@ -46,6 +47,7 @@ class DeckInfo extends StatelessWidget {
                 ),
               ),
               onPressed: () {
+                SoundController.play('select-deck-sound.wav');
                 final resultProvider =
                     Provider.of<Results>(context, listen: false);
                 resultProvider.colorHex = deck.color;

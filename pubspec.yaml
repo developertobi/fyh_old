@@ -27,6 +27,8 @@ dependencies:
   cloud_firestore: ^0.13.7
   permission_handler: ^5.0.1+1
   after_layout: ^1.0.7+2
+  audioplayers: ^0.15.1
+  audioplayer: ^0.8.1
 
   cupertino_icons: ^0.1.3
 

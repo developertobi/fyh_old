@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/models/deck.dart';
+import 'package:naija_charades/models/sound_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'deck_alert_dialog.dart';
@@ -12,6 +13,7 @@ class DeckCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         HapticFeedback.mediumImpact();
+        SoundController.play('select-deck-sound.wav');
         _showDeckInfoDialog(context, deck);
       },
       child: ClipRect(
