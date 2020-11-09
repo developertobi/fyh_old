@@ -1,3 +1,22 @@
+/// -----------------------------------------------------------------
+/// 
+/// File: game_screen.dart
+/// Project: Official Cali Connect
+/// File Created: Tuesday, June 30th, 2020
+/// Description: 
+/// 
+/// Author: Timothy Itodo - timothy@longsoftware.io
+/// -----
+/// Last Modified: Sunday, November 8th, 2020
+/// Modified By: Timothy Itodo - timothy@longsoftware.io
+/// -----
+/// 
+/// Copyright (C) 2020 - 2020 Long Software LLC. & Official Cali Connect
+/// 
+/// -----------------------------------------------------------------
+
+
+
 import 'dart:io';
 import 'dart:math';
 import 'dart:async';
@@ -12,7 +31,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/models/response.dart';
 import 'package:naija_charades/models/sound_controller.dart';
-// import 'package:naija_charades/models/sound_controller.dart';
 import 'package:naija_charades/providers/results.dart';
 import 'package:naija_charades/providers/video_file.dart';
 import 'package:naija_charades/screens/home_screen.dart';
@@ -25,6 +43,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors/sensors.dart';
 import 'package:tilt_action/tilt_action.dart';
+import 'package:wakelock/wakelock.dart';
 
 enum TiltAction {
   up,
@@ -102,11 +121,14 @@ class _GameScreenState extends State<GameScreen>
   @override
   void initState() {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
+      Platform.isIOS
+          ? DeviceOrientation.landscapeRight
+          : DeviceOrientation.landscapeLeft,
     ]);
     _initCameraRequirements();
     _startListeningForHorizontalPhonePosition();
     _initTilt();
+    Wakelock.enable();
     super.initState();
   }
 
@@ -125,58 +147,61 @@ class _GameScreenState extends State<GameScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Positioned.fill(
-          child:
-              _cameraController != null && _cameraController.value.isInitialized
-                  ? RotatedBox(
-                      quarterTurns: 3,
-                      child: AspectRatio(
-                        aspectRatio: _cameraController.value.aspectRatio,
-                        child: CameraPreview(_cameraController),
-                      ),
-                    )
-                  : Container(),
-        ),
-        Opacity(
-          opacity: 0.9,
-          child: Scaffold(
-            backgroundColor: _backgroundColor,
-            body: Container(
-              child: Center(
-                child: FractionallySizedBox(
-                  heightFactor: 0.8,
-                  widthFactor: 0.8,
-                  alignment: Alignment.center,
-                  child: _content,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: _cameraController != null &&
+                    _cameraController.value.isInitialized
+                ? RotatedBox(
+                    quarterTurns: 3,
+                    child: AspectRatio(
+                      aspectRatio: _cameraController.value.aspectRatio,
+                      child: CameraPreview(_cameraController),
+                    ),
+                  )
+                : Container(),
+          ),
+          Opacity(
+            opacity: 0.9,
+            child: Scaffold(
+              backgroundColor: _backgroundColor,
+              body: Container(
+                child: Center(
+                  child: FractionallySizedBox(
+                    heightFactor: 0.8,
+                    widthFactor: 0.8,
+                    alignment: Alignment.center,
+                    child: _content,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: 30,
-          left: 50,
-          child: Material(
-            color: Colors.transparent,
-            child: IconButton(
-              icon: Icon(
-                Feather.arrow_left_circle,
-                size: 40,
+          Positioned(
+            top: 30,
+            left: 50,
+            child: Material(
+              color: Colors.transparent,
+              child: IconButton(
+                icon: Icon(
+                  Feather.arrow_left_circle,
+                  size: 40,
+                ),
+                onPressed: () {
+                  // Explore this function. It's Hacky
+                  setState(() {
+                    timeLeft = 0;
+                  });
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      HomeScreen.routeName, (route) => false);
+                },
               ),
-              onPressed: () {
-                // Explore this function. It's Hacky
-                setState(() {
-                  timeLeft = 0;
-                });
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    HomeScreen.routeName, (route) => false);
-              },
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
@@ -210,15 +235,17 @@ class _GameScreenState extends State<GameScreen>
   }
 
   void _setFilePath() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String dirPath = '${appDocDir.path}/videos';
+
+    // TODO: Confirm if temp dir is really temp
+    Directory appTempDir = await getTemporaryDirectory();
+    String dirPath = '${appTempDir.path}/videos';
     await Directory(dirPath).create(recursive: true);
 
-    _videoFilePath = '$dirPath/video.mp4';
+    _videoFilePath = '$dirPath/video_${DateTime.now().millisecondsSinceEpoch}.mp4';
 
-    if (await File(_videoFilePath).exists()) {
-      await File(_videoFilePath).delete();
-    }
+    // if (await File(_videoFilePath).exists()) {
+    //   await File(_videoFilePath).delete();
+    // }
 
     Provider.of<VideoFile>(context, listen: false).setPath(_videoFilePath);
   }

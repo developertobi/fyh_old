@@ -1,3 +1,20 @@
+/// -----------------------------------------------------------------
+/// 
+/// File: deck_card.dart
+/// Project: Official Cali Connect
+/// File Created: Tuesday, June 30th, 2020
+/// Description: 
+/// 
+/// Author: Timothy Itodo - timothy@longsoftware.io
+/// -----
+/// Last Modified: Sunday, November 8th, 2020
+/// Modified By: Timothy Itodo - timothy@longsoftware.io
+/// -----
+/// 
+/// Copyright (C) 2020 - 2020 Long Software LLC. & Official Cali Connect
+/// 
+/// -----------------------------------------------------------------
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/models/deck.dart';
@@ -16,7 +33,8 @@ class DeckCard extends StatelessWidget {
         SoundController.play('select-deck-sound.wav');
         _showDeckInfoDialog(context, deck);
       },
-      child: ClipRect(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
         child: Image.network(
           deck.backgroundUrl,
           fit: BoxFit.contain,

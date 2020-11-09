@@ -1,3 +1,20 @@
+/// -----------------------------------------------------------------
+///
+/// File: home_screen.dart
+/// Project: Official Cali Connect
+/// File Created: Monday, June 29th, 2020
+/// Description:
+///
+/// Author: Timothy Itodo - timothy@longsoftware.io
+/// -----
+/// Last Modified: Sunday, November 8th, 2020
+/// Modified By: Timothy Itodo - timothy@longsoftware.io
+/// -----
+///
+/// Copyright (C) 2020 - 2020 Long Software LLC. & Official Cali Connect
+///
+/// -----------------------------------------------------------------
+
 import 'package:after_layout/after_layout.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +29,7 @@ import 'package:naija_charades/widgets/home/loading.dart';
 import 'package:naija_charades/widgets/results/results_dialog.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../colors.dart' as AppColors;
 
@@ -30,57 +48,66 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   @override
+  void initState() {
+    Wakelock.disable();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            color: Colors.black,
-            child: Center(
-              child: Image.asset('assets/logo.jpg'),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: <Widget>[
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              color: Colors.black,
+              child: Center(
+                child: Image.asset('assets/logo.jpg'),
+              ),
             ),
-          ),
-          FutureBuilder(
-            future: _requestAllPermissions(context),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                  color: Colors.black.withOpacity(0.7),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Consumer<FirestoreData>(
-                    builder: (_, firestoreData, __) =>
-                        FutureBuilder<List<Deck>>(
-                      future: firestoreData.updateData(),
-                      builder: (_, snapshot) {
-                        if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                          var decks = snapshot.data;
-                          return DeckBuilder(decks: decks);
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.done) {
-                          return ErrorMsg();
-                        } else {
-                          return Loading();
-                        }
-                      },
+            FutureBuilder(
+              future: _requestAllPermissions(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Container(
+                    color: Colors.black.withOpacity(0.7),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Consumer<FirestoreData>(
+                      builder: (_, firestoreData, __) =>
+                          FutureBuilder<List<Deck>>(
+                        future: firestoreData.updateData(),
+                        builder: (_, snapshot) {
+                          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+                            var decks = snapshot.data;
+                            return DeckBuilder(decks: decks);
+                          } else if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return ErrorMsg();
+                          } else {
+                            return Loading();
+                          }
+                        },
+                      ),
                     ),
-                  ),
+                  );
+                }
+                // While _requestAllPermissions hasnt completed execution
+                return Container(
+                  color: Colors.black.withOpacity(0.9),
                 );
-              }
-              // While _requestAllPermissions hasnt completed execution
-              return Container(
-                color: Colors.black.withOpacity(0.9),
-              );
-            },
-          ),
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

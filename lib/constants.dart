@@ -1,6 +1,23 @@
+/// -----------------------------------------------------------------
+///
+/// File: constants.dart
+/// Project: Official Cali Connect
+/// File Created: Saturday, July 25th, 2020
+/// Description:
+///
+/// Author: Timothy Itodo - timothy@longsoftware.io
+/// -----
+/// Last Modified: Sunday, November 8th, 2020
+/// Modified By: Timothy Itodo - timothy@longsoftware.io
+/// -----
+///
+/// Copyright (C) 2020 - 2020 Long Software LLC. & Official Cali Connect
+///
+/// -----------------------------------------------------------------
+
 import 'package:flutter/material.dart';
 
-const kDeckCardAspectRatio = 160 / 210;
+const kDeckCardAspectRatio = 2160 / 3840;
 const kDeckCardHeight = 400.0;
 
 // Colors

@@ -66,7 +66,9 @@ class _VideoPreviewState extends State<VideoPreview> {
                           aspectRatio: Platform.isAndroid
                               ? 1 / _videoPlayerController.value.aspectRatio
                               : _videoPlayerController.value.aspectRatio,
-                          child: VideoPlayer(_videoPlayerController),
+                          child: RotatedBox(
+                              quarterTurns: Platform.isAndroid ? 1 : 0,
+                              child: VideoPlayer(_videoPlayerController)),
                         ),
                         if (!_videoPlayerController.value.isPlaying)
                           Positioned.fill(
