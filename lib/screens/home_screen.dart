@@ -7,7 +7,7 @@
 ///
 /// Author: Timothy Itodo - timothy@longsoftware.io
 /// -----
-/// Last Modified: Sunday, November 8th, 2020
+/// Last Modified: Tuesday, November 17th, 2020
 /// Modified By: Timothy Itodo - timothy@longsoftware.io
 /// -----
 ///
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen>
               width: double.infinity,
               color: Colors.black,
               child: Center(
-                child: Image.asset('assets/logo.jpg'),
+                child: Image.asset('assets/logo.png'),
               ),
             ),
             FutureBuilder(

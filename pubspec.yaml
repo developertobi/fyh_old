@@ -1,9 +1,9 @@
 name: naija_charades
 description: A new Flutter project.
 
-publish_to: 'none' 
+publish_to: "none"
 
-version: 1.0.0+3
+version: 1.0.0+7
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -37,8 +37,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter:
+  flutter_launcher_icons: "^0.8.0"
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.jpg"
+
+flutter:
   uses-material-design: true
 
   assets:

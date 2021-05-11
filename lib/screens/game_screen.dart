@@ -7,7 +7,7 @@
 /// 
 /// Author: Timothy Itodo - timothy@longsoftware.io
 /// -----
-/// Last Modified: Sunday, November 8th, 2020
+/// Last Modified: Sunday, January 31st, 2021
 /// Modified By: Timothy Itodo - timothy@longsoftware.io
 /// -----
 /// 
@@ -252,6 +252,7 @@ class _GameScreenState extends State<GameScreen>
 
   void _initTilt() {
     _tilt = Tilt.waitForStart(
+      offset: 1.0,
       onTiltUp: () => _onTilt(TiltAction.up),
       onTiltDown: () {
         _onTilt(TiltAction.down);

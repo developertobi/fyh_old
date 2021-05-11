@@ -19,15 +19,27 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Can I use the Apple Music please?</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Can I use your calendar please?</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Can I use the camera please?</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Can I use your contacts please?</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Can I use your location please?</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Can I use the mic please?</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Can I use your motion sensors please?</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires access to the photo library.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Can I use your speech recognition please?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
