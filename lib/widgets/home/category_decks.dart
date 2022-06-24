@@ -8,7 +8,10 @@ class CategoryDecks extends StatelessWidget {
   final String categoryTitle;
   final List<Deck> decks;
 
-  const CategoryDecks({this.decks, this.categoryTitle});
+  const CategoryDecks({
+    required this.decks,
+    required this.categoryTitle,
+  });
 
   @override
   Widget build(BuildContext context) {

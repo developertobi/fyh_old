@@ -3,21 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:naija_charades/constants.dart';
 
 class ReadyTimer extends StatelessWidget {
-  final Function onReady;
+  final void Function()? onReady;
 
-  const ReadyTimer({@required this.onReady});
+  const ReadyTimer({required this.onReady});
 
   @override
   Widget build(BuildContext context) {
     return FittedBox(
-      child: RotateAnimatedTextKit(
+      child: AnimatedTextKit(
+        animatedTexts: [
+          RotateAnimatedText(
+            '3',
+            textAlign: TextAlign.center,
+            textStyle: kNunitoTextStyle.copyWith(fontSize: 70),
+            duration: const Duration(milliseconds: 200),
+          ),
+          RotateAnimatedText(
+            '2',
+            textAlign: TextAlign.center,
+            textStyle: kNunitoTextStyle.copyWith(fontSize: 70),
+            duration: const Duration(milliseconds: 200),
+          ),
+          RotateAnimatedText(
+            '1',
+            textAlign: TextAlign.center,
+            textStyle: kNunitoTextStyle.copyWith(fontSize: 70),
+            duration: const Duration(milliseconds: 200),
+          ),
+          RotateAnimatedText(
+            'GO',
+            textAlign: TextAlign.center,
+            textStyle: kNunitoTextStyle.copyWith(fontSize: 70),
+            duration: const Duration(milliseconds: 200),
+          ),
+        ],
         onFinished: onReady,
         totalRepeatCount: 1,
-        textStyle: kNunitoTextStyle.copyWith(fontSize: 70),
-        // textStyle: TextStyle(fontSize: 70, color: Colors.white),
-        text: ['3', '2', '1', 'GO'],
-        textAlign: TextAlign.center,
-        duration: Duration(milliseconds: 500),
+        // isRepeatingAnimation: false,
       ),
     );
   }

@@ -5,7 +5,7 @@ class Status extends StatelessWidget {
   final bool isCorrect;
 
   const Status({
-    @required this.isCorrect,
+    required this.isCorrect,
   });
 
   @override

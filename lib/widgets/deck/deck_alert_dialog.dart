@@ -14,7 +14,7 @@ class DeckAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(milliseconds: 500), () {
-      if (cardKey.currentState != null) cardKey.currentState.toggleCard();
+      if (cardKey.currentState != null) cardKey.currentState?.toggleCard();
     });
 
     var deck = Provider.of<Deck>(context, listen: false);

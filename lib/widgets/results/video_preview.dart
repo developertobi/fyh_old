@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPreview extends StatefulWidget {
@@ -13,30 +13,45 @@ class VideoPreview extends StatefulWidget {
 }
 
 class _VideoPreviewState extends State<VideoPreview> {
-  VideoPlayerController _videoPlayerController;
+  late VideoPlayerController _videoPlayerController;
 
   @override
   void initState() {
-    _videoPlayerController =
-        VideoPlayerController.file(File(widget.videoFilePath));
-
-    _videoPlayerController.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      _videoPlayerController.setLooping(true);
-
-      print('Aspect ratio: ${_videoPlayerController.value.aspectRatio}');
-
-      setState(() {});
-    });
-
+    init();
     super.initState();
+  }
+
+  void init() async {
+    print('Video preview init state called...');
+    print('Video file path : ${widget.videoFilePath}');
+    _videoPlayerController = VideoPlayerController.file(
+        File(widget.videoFilePath))
+      // VideoPlayerController.network(
+      //     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
+      ..initialize().then((value) {
+        _videoPlayerController.setLooping(true);
+        print('Aspect ratio: ${_videoPlayerController.value.aspectRatio}');
+        print(
+            '_videoPlayerController.value.isInitialize: ${_videoPlayerController.value.isInitialized}');
+        setState(() {});
+      });
+    //         .initialize()
+    //         .then((_) {
+    //   if (!mounted) {
+    //     // return;
+    //   }
+    //   _videoPlayerController.setLooping(true);
+    //
+    //   print('Aspect ratio: ${_videoPlayerController.value.aspectRatio}');
+    //
+    //   setState(() {});
+    //   return _videoPlayerController;
+    // });
   }
 
   @override
   void dispose() {
-    _videoPlayerController?.dispose();
+    _videoPlayerController.dispose();
     super.dispose();
   }
 
@@ -59,7 +74,7 @@ class _VideoPreviewState extends State<VideoPreview> {
                 setState(() {});
               },
               child: Stack(
-                children: _videoPlayerController.value.initialized
+                children: _videoPlayerController.value.isInitialized
                     ? <Widget>[
                         AspectRatio(
                           // Android's aspect ration is inverse of iphone
@@ -90,7 +105,11 @@ class _VideoPreviewState extends State<VideoPreview> {
                             ),
                           )
                       ]
-                    : <Widget>[Container()],
+                    : <Widget>[
+                        Container(
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      ],
               ),
             ),
           ),

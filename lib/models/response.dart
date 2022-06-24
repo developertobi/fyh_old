@@ -3,7 +3,7 @@ class Response {
   final bool isCorrect;
 
   const Response({
-    this.word,
-    this.isCorrect,
+    required this.word,
+    required this.isCorrect,
   });
 }

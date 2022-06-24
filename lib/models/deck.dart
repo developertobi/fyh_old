@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Deck {
   final String title;
@@ -8,10 +7,10 @@ class Deck {
   final int color;
 
   const Deck({
-    @required this.title,
-    @required this.backgroundUrl,
-    @required this.description,
-    @required this.words,
-    @required this.color,
+    required this.title,
+    required this.backgroundUrl,
+    required this.description,
+    required this.words,
+    required this.color,
   });
 }

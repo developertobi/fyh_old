@@ -7,8 +7,8 @@ import 'deck_card.dart';
 
 class DeckBuilder extends StatelessWidget {
   const DeckBuilder({
-    Key key,
-    @required this.decks,
+    Key? key,
+    required this.decks,
   }) : super(key: key);
 
   final List<Deck> decks;

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class DeckFlipCardPage extends StatelessWidget {
   final Widget child;
-  const DeckFlipCardPage({@required this.child});
+  const DeckFlipCardPage({required this.child});
 
   @override
   Widget build(BuildContext context) {

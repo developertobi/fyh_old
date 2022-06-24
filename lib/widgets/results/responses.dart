@@ -3,7 +3,7 @@ import 'package:naija_charades/constants.dart';
 import 'package:naija_charades/models/response.dart';
 
 class Responses extends StatelessWidget {
-  const Responses({@required this.responses});
+  const Responses({required this.responses});
   final List<Response> responses;
 
   @override

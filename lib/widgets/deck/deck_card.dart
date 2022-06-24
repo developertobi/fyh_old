@@ -1,24 +1,23 @@
 /// -----------------------------------------------------------------
-/// 
+///
 /// File: deck_card.dart
 /// Project: Official Cali Connect
 /// File Created: Tuesday, June 30th, 2020
-/// Description: 
-/// 
+/// Description:
+///
 /// Author: Timothy Itodo - timothy@longsoftware.io
 /// -----
 /// Last Modified: Sunday, November 8th, 2020
 /// Modified By: Timothy Itodo - timothy@longsoftware.io
 /// -----
-/// 
+///
 /// Copyright (C) 2020 - 2020 Long Software LLC. & Official Cali Connect
-/// 
+///
 /// -----------------------------------------------------------------
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:naija_charades/models/deck.dart';
-import 'package:naija_charades/models/sound_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'deck_alert_dialog.dart';
@@ -30,7 +29,7 @@ class DeckCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         HapticFeedback.mediumImpact();
-        SoundController.play('select-deck-sound.wav');
+        // SoundController.play('select-deck-sound.wav');
         _showDeckInfoDialog(context, deck);
       },
       child: ClipRRect(
@@ -63,7 +62,9 @@ class DeckCard extends StatelessWidget {
       barrierLabel: '',
       context: context,
       // ignore: missing_return
-      pageBuilder: (context, animation1, animation2) {},
+      pageBuilder: (context, animation1, animation2) {
+        return Container();
+      },
     );
   }
 }

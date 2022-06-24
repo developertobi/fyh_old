@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 import 'deck.dart';
 
@@ -7,8 +6,8 @@ class Category {
   final List<Deck> decks;
 
   const Category({
-    @required this.title,
-    @required this.decks,
+    required this.title,
+    required this.decks,
   });
 
   // List<Deck> get decks => [..._decks];

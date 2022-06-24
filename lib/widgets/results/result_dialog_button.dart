@@ -3,14 +3,14 @@ import 'package:naija_charades/constants.dart';
 import 'package:naija_charades/widgets/shared/round_button.dart';
 
 class ResultsDialogButton extends StatelessWidget {
-  final Function onPressed;
+  final void Function()? onPressed;
   final IconData icon;
   final String text;
 
   const ResultsDialogButton({
-    this.onPressed,
-    this.icon,
-    this.text,
+    required this.onPressed,
+    required this.icon,
+    required this.text,
   });
 
   @override

@@ -5,8 +5,9 @@ import 'package:naija_charades/widgets/shared/round_button.dart';
 
 import '../../colors.dart' as AppColors;
 
-
 class ErrorMsg extends StatelessWidget {
+  final String message;
+  ErrorMsg({required this.message});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,14 +23,14 @@ class ErrorMsg extends StatelessWidget {
             textStyle: TextStyle(
                 fontSize: 25, fontWeight: FontWeight.w700, color: Colors.white),
             textAlign: TextAlign.center,
-            alignment: AlignmentDirectional.center,
+            // alignment: AlignmentDirectional.center,
             repeatForever: true,
           ),
           SizedBox(
             height: 20,
           ),
           RoundButton(
-            child: Text('Try Again'),
+            child: Text(message),
             color: AppColors.prussianBlue,
             onPressed: () => Navigator.of(context)
                 .pushReplacementNamed(HomeScreen.routeName),

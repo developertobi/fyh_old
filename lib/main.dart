@@ -1,18 +1,18 @@
 /// -----------------------------------------------------------------
-/// 
+///
 /// File: main.dart
 /// Project: Official Cali Connect
 /// File Created: Monday, June 29th, 2020
-/// Description: 
-/// 
+/// Description:
+///
 /// Author: Timothy Itodo - timothy@longsoftware.io
 /// -----
 /// Last Modified: Sunday, November 8th, 2020
 /// Modified By: Timothy Itodo - timothy@longsoftware.io
 /// -----
-/// 
+///
 /// Copyright (C) 2020 - 2020 Long Software LLC. & Official Cali Connect
-/// 
+///
 /// -----------------------------------------------------------------
 
 import 'package:camera/camera.dart';
@@ -27,7 +27,7 @@ import 'package:provider/provider.dart';
 
 import 'screens/home_screen.dart';
 
-List<CameraDescription> cameras;
+late List<CameraDescription> cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

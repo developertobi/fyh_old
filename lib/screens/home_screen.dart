@@ -16,9 +16,9 @@
 /// -----------------------------------------------------------------
 
 import 'package:after_layout/after_layout.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_flushbar/flutter_flushbar.dart';
 import 'package:naija_charades/models/deck.dart';
 import 'package:naija_charades/providers/firestore_data.dart';
 import 'package:naija_charades/providers/results.dart';
@@ -86,13 +86,31 @@ class _HomeScreenState extends State<HomeScreen>
                           FutureBuilder<List<Deck>>(
                         future: firestoreData.updateData(),
                         builder: (_, snapshot) {
-                          if (snapshot.hasData && snapshot.data.isNotEmpty) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            if (snapshot.data!.isEmpty) {
+                              print('Empty decks');
+                              return ErrorMsg(message: 'Empty decks');
+                            }
                             var decks = snapshot.data;
-                            return DeckBuilder(decks: decks);
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return ErrorMsg();
-                          } else {
+                            return DeckBuilder(decks: decks!);
+                          }
+                          // else if (snapshot.data == null) {
+                          //   print('Data is null');
+                          //   return ErrorMsg(
+                          //     message: 'Data is null',
+                          //   );
+                          // } else if (snapshot.data!.isEmpty) {
+                          //   print('Data is null');
+                          //   return ErrorMsg(
+                          //     message: 'Data is null',
+                          //   );
+                          // } else if (snapshot.connectionState ==
+                          //     ConnectionState.done) {
+                          //   return ErrorMsg(
+                          //     message: 'Try Again',
+                          //   );
+                          // }
+                          else {
                             return Loading();
                           }
                         },
@@ -113,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _showResults(BuildContext context) async {
-    Map<String, String> args = ModalRoute.of(context).settings.arguments;
+    Object? args = ModalRoute.of(context)?.settings.arguments;
     var permissionStatuses =
         Provider.of<Results>(context, listen: false).permissionStatuses;
 
@@ -121,8 +139,9 @@ class _HomeScreenState extends State<HomeScreen>
       showDialog(
         context: context,
         builder: (_) => ResultsDialog(
-          showVideo: permissionStatuses['camera'].isGranted &&
-              permissionStatuses['microphone'].isGranted,
+          showVideo: permissionStatuses!['camera']!.isGranted &&
+              permissionStatuses['microphone']!.isGranted &&
+              permissionStatuses['storage']!.isGranted,
         ),
         barrierDismissible: false,
       );
@@ -132,10 +151,11 @@ class _HomeScreenState extends State<HomeScreen>
   Future<void> _requestAllPermissions(BuildContext context) async {
     if (await Permission.camera.isDenied ||
         await Permission.microphone.isDenied ||
+        await Permission.storage.isDenied ||
         await Permission.photos.isDenied) {
       Flushbar(
         messageText: Text(
-          'Your camera, mic or photos is disabled for this app',
+          'Your camera, mic or storage is disabled for this app',
           style: TextStyle(color: Colors.white),
         ),
         mainButton: FlatButton(
@@ -157,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen>
     await [
       Permission.camera,
       Permission.microphone,
+      Permission.storage,
     ].request();
   }
 }

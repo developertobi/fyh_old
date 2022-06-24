@@ -1,6 +1,6 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_flushbar/flutter_flushbar.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:naija_charades/constants.dart';
 import 'package:naija_charades/providers/results.dart';
@@ -15,12 +15,13 @@ import 'package:provider/provider.dart';
 
 class ResultsDialog extends StatelessWidget {
   final bool showVideo;
-  const ResultsDialog({@required this.showVideo});
+  const ResultsDialog({required this.showVideo});
 
   @override
   Widget build(BuildContext context) {
     final resultsProvider = Provider.of<Results>(context, listen: false);
     final videoFilePath = Provider.of<VideoFile>(context).path;
+    print('Show video status $showVideo');
 
     return Dialog(
       backgroundColor: Color(resultsProvider.colorHex),
@@ -127,11 +128,13 @@ class ResultsDialog extends StatelessWidget {
   void _saveVideo(BuildContext context, String videoFilePath) async {
     HapticFeedback.mediumImpact();
 
-    await Permission.photos.request();
+    await Permission.storage.request();
 
-    if (await Permission.photos.isGranted) {
-      GallerySaver.saveVideo(videoFilePath)
-          .then((_) => _buildFlushBar('Video Saved!', context));
+    if (await Permission.storage.isGranted) {
+      GallerySaver.saveVideo(videoFilePath).then((saved) {
+        print('Video saved? $saved');
+        _buildFlushBar('Video Saved! $saved', context);
+      });
     } else {
       _buildFlushBar('Video not saved!', context);
     }

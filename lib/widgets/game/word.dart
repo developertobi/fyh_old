@@ -8,8 +8,8 @@ class Word extends StatelessWidget {
   final bool isLast5Seconds;
 
   const Word({
-    @required this.answer,
-    @required this.timeLeft,
+    required this.answer,
+    required this.timeLeft,
     this.isLast5Seconds = false,
   });
 
