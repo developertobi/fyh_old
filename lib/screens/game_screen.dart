@@ -23,7 +23,6 @@ import 'package:after_layout/after_layout.dart';
 // import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:camera/camera.dart';
-import 'package:external_path/external_path.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:naija_charades/constants.dart';
@@ -71,12 +70,11 @@ class _GameScreenState extends State<GameScreen>
   late int wordsIndex;
   List words = [];
   List<Response> responses = [];
-  late Tilt _tilt;
+  late TiltUtil _tilt;
   int timeLeft = 10;
   int _score = 0;
   late StreamSubscription _streamSubscription;
   Color _backgroundColor = Colors.black;
-  // final assetsAudioPlayer = AssetsAudioPlayer();
   final player = AudioPlayer();
 
   Widget _content = FractionallySizedBox(
@@ -245,86 +243,14 @@ class _GameScreenState extends State<GameScreen>
         }
         setState(() {});
       });
-
-      _setFilePath();
-      // _setFilePath1();
     }
     setState(() {
       permissionLoading = false;
     });
-    // _setFilePath();
-  }
-
-//   // static Future<File> saveCard(String cardName, Unit8List card) async {
-//   void _setFilePath1() async {
-// // Path to save Image File
-//     print('Initial Video file path');
-//     String saveFilePath = '';
-//
-// // // Ask for Permission
-// //     var status = await Permission.storage.status;
-// //     if (!status.isGranted) {
-// //       await Permission.storage.request();
-// //     }
-//
-// // Get this App Document Directory
-//     final _appDocumentDirectory =
-//         await ExternalPath.getExternalStorageDirectories();
-//
-//     print('_appDocumentDirectory $_appDocumentDirectory');
-//
-// // App Document Directory + folder name
-//     final Directory _appDocumentDirectoryFolder =
-//         Directory('$_appDocumentDirectory');
-//     print('_appDocumentDirectoryFolder $_appDocumentDirectoryFolder');
-//     print(
-//         '_appDocumentDirectoryFolder absolute ${_appDocumentDirectoryFolder.absolute}');
-//
-//     if (await _appDocumentDirectoryFolder.exists()) {
-// //if folder already exists return path
-//       saveFilePath = _appDocumentDirectoryFolder.path;
-//     } else {
-// //if folder not exists create folder and then return its path
-//       final Directory _appDocDirNewFolder =
-//           await _appDocumentDirectoryFolder.create(recursive: true);
-//       saveFilePath = _appDocDirNewFolder.path;
-//     }
-//     print('saveFilePath $saveFilePath');
-//
-//     _videoFilePath =
-//         '$saveFilePath/video_${DateTime.now().millisecondsSinceEpoch}.mp4';
-//     print('Video file path: $_videoFilePath');
-//
-//     Provider.of<VideoFile>(context, listen: false).setPath(_videoFilePath);
-//
-// //
-// // // File to save
-// //     final file = File('$saveFilePath/$cardName.png');
-// //     // return file.writeAsBytes(card);
-//   }
-
-  void _setFilePath() async {
-    // TODO: Confirm if temp dir is really temp
-    print('Initial Video file path called...');
-    // Future<Directory?>? appTempDir = getTemporaryDirectory();
-    // print('App temp dir: ${appTempDir}');
-    // String dirPath = '$appTempDir/videos';
-    // await Directory(dirPath).create(recursive: true);
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    print('App doc dir: ${appDocDir.path}');
-    String dirPath = '${appDocDir.path}/videos';
-    await Directory(dirPath).create(recursive: true);
-    print('Dir path: $dirPath');
-
-    _videoFilePath =
-        '$dirPath/video_${DateTime.now().millisecondsSinceEpoch}.mp4';
-    print('Video file path: $_videoFilePath');
-
-    Provider.of<VideoFile>(context, listen: false).setPath(_videoFilePath);
   }
 
   void _initTilt() {
-    _tilt = Tilt.waitForStart(
+    _tilt = TiltUtil.waitForStart(
       offset: 1.0,
       onTiltUp: () => _onTilt(TiltAction.up),
       onTiltDown: () {
@@ -358,10 +284,6 @@ class _GameScreenState extends State<GameScreen>
 
     _setContent(Status(isCorrect: direction == TiltAction.down));
 
-    // direction == TiltAction.up
-    //     ? SoundController.play('pass-sound.wav')
-    //     : SoundController.play('correct-sound.wav');
-
     if (direction == TiltAction.up) {
       _changeBackgroundColor(kPassColor);
       player.setAsset('assets/pass-sound.wav');
@@ -371,10 +293,6 @@ class _GameScreenState extends State<GameScreen>
       player.setAsset('assets/correct-sound.wav');
       player.play();
     }
-
-    // direction == TiltAction.up
-    //     ? _changeBackgroundColor(kPassColor)
-    //     : _changeBackgroundColor(kCorrectColor);
 
     responses.add(
       Response(
@@ -402,9 +320,11 @@ class _GameScreenState extends State<GameScreen>
     const gravity = 9.80665;
     _streamSubscription =
         accelerometerEvents.listen((AccelerometerEvent event) async {
-      if ((event.x - gravity).abs() < 2) {
-        // SoundController.play('3-sec-countdown-sound.wav');
-        // assetsAudioPlayer.open(Audio('assets/3-sec-countdown-sound.wav'));
+      print('AccelerometerEvent x::: ${event.x}');
+      print('AccelerometerEvent y::: ${event.y}');
+      print('AccelerometerEvent z::: ${event.z}');
+      print('AccelerometerEvent x - gravity::: ${event.x - gravity}');
+      if ((event.x - gravity) > 1) {
         player.setAsset('assets/3-sec-countdown-sound.wav');
         player.play();
         _setContent(
@@ -414,7 +334,6 @@ class _GameScreenState extends State<GameScreen>
               _startTimerCountdown();
               _tilt.startListening();
               _cameraController.startVideoRecording();
-              // _cameraController.startVideoRecording(_videoFilePath);
             },
           ),
         );
@@ -431,14 +350,7 @@ class _GameScreenState extends State<GameScreen>
           t.cancel();
           _tilt.stopListening();
           _cameraController.stopVideoRecording().then((value) {
-            print('File path value... :: ${value.path}');
-            print(
-                '_videoFilePath before saving recorded video... :: $_videoFilePath');
-            _videoFilePath = value.path;
-            Provider.of<VideoFile>(context, listen: false)
-                .setPath(_videoFilePath);
-            print(
-                '_videoFilePath after saving recorded video... :: $_videoFilePath');
+            Provider.of<VideoFile>(context, listen: false).setPath(value.path);
           });
 
           final resultProvider = Provider.of<Results>(context, listen: false);
@@ -446,7 +358,6 @@ class _GameScreenState extends State<GameScreen>
           resultProvider.score = _score;
 
           HapticFeedback.vibrate();
-          // SoundController.play('timeup-sound.wav');
           player.setAsset('assets/timeup-sound.wav');
           player.play();
           _setContent(
@@ -459,7 +370,6 @@ class _GameScreenState extends State<GameScreen>
 
           if (timeLeft < 6) {
             if (timeLeft == 4)
-              // SoundController.play('5-sec-countdown-sound.wav');
               player.setAsset('assets/5-sec-countdown-sound.wav');
             player.play();
             HapticFeedback.vibrate();

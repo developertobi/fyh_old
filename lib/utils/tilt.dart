@@ -11,7 +11,7 @@ enum TiltPosition {
   normal,
 }
 
-class Tilt {
+class TiltUtil {
   /// User callback when phone is tilted up
   final VoidCallback onTiltUp;
 
@@ -43,7 +43,7 @@ class Tilt {
 
   /// This constructor starts listening for for [accelerometerEvents] immediately
   /// the object is created
-  Tilt({
+  TiltUtil({
     required this.onTiltUp,
     required this.onTiltDown,
     required this.onNormal,
@@ -55,7 +55,7 @@ class Tilt {
 
   /// This constructor waits until [startListening] is called before listening
   /// for events
-  Tilt.waitForStart({
+  TiltUtil.waitForStart({
     required this.onTiltUp,
     required this.onTiltDown,
     required this.onNormal,
