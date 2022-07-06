@@ -93,24 +93,7 @@ class _HomeScreenState extends State<HomeScreen>
                             }
                             var decks = snapshot.data;
                             return DeckBuilder(decks: decks!);
-                          }
-                          // else if (snapshot.data == null) {
-                          //   print('Data is null');
-                          //   return ErrorMsg(
-                          //     message: 'Data is null',
-                          //   );
-                          // } else if (snapshot.data!.isEmpty) {
-                          //   print('Data is null');
-                          //   return ErrorMsg(
-                          //     message: 'Data is null',
-                          //   );
-                          // } else if (snapshot.connectionState ==
-                          //     ConnectionState.done) {
-                          //   return ErrorMsg(
-                          //     message: 'Try Again',
-                          //   );
-                          // }
-                          else {
+                          } else {
                             return Loading();
                           }
                         },

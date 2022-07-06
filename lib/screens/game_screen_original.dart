@@ -74,63 +74,53 @@ class _GameScreenState extends State<GameScreen>
   int timeLeft = 10;
   int _score = 0;
   late StreamSubscription _streamSubscription;
-  Color _backgroundColor = Colors.blue;
+  Color _backgroundColor = Colors.black;
   final player = AudioPlayer();
-  Widget? _content;
 
-  bool timerVisible = false;
-  static const maxSeconds = 3;
-  int seconds = maxSeconds;
-  Timer? timer;
-
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (seconds > 0) {
-        setState(() {
-          seconds--;
-        });
-      }
-      if (seconds == 0) {
-        timer.cancel();
-        HapticFeedback.vibrate();
-        _startTimerCountdown();
-        _tilt.startListening();
-        _cameraController.startVideoRecording();
-      }
-    });
-  }
-
-  initContent() {
-    _content = GestureDetector(
-      onTap: () {
-        startGame();
-      },
-      child: FractionallySizedBox(
-          heightFactor: 0.75,
-          widthFactor: 0.75,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+  Widget _content = FractionallySizedBox(
+      heightFactor: 0.75,
+      widthFactor: 0.75,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          AutoSizeText(
+            'Place on ForeHead'.toUpperCase(),
+            style: kNunitoTextStyle.copyWith(
+                fontSize: 70, fontWeight: FontWeight.w900),
+            minFontSize: 20,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              const Text(
-                'PLACE ON FOREHEAD',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 48,
-                  fontWeight: FontWeight.w700,
+              Image.asset('assets/arrow-down.png'),
+              SizedBox(width: 10),
+              Expanded(
+                child: AutoSizeText(
+                  'Tilt down for Correct',
+                  textAlign: TextAlign.left,
+                  maxLines: 1,
+                  style: kNunitoTextStyle.copyWith(fontSize: 20),
                 ),
               ),
-              const Text(
-                'OR TAP SCREEN TO START',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
+              SizedBox(width: 20),
+              Expanded(
+                child: AutoSizeText(
+                  'Tilt up for Pass',
+                  textAlign: TextAlign.right,
+                  style: kNunitoTextStyle.copyWith(fontSize: 20),
+                  maxLines: 1,
                 ),
               ),
+              SizedBox(width: 10),
+              Image.asset('assets/arrow-up.png'),
             ],
-          )),
-    );
-  }
+          )
+        ],
+      ));
 
   @override
   void initState() {
@@ -139,7 +129,6 @@ class _GameScreenState extends State<GameScreen>
           ? DeviceOrientation.landscapeRight
           : DeviceOrientation.landscapeLeft,
     ]);
-    initContent();
     _initCameraRequirements();
     _startListeningForHorizontalPhonePosition();
     _initTilt();
@@ -180,19 +169,10 @@ class _GameScreenState extends State<GameScreen>
                       : Container(),
                 ),
                 Opacity(
-                  opacity: 0.85,
+                  opacity: 0.9,
                   child: Scaffold(
-                    // backgroundColor: _backgroundColor,
+                    backgroundColor: _backgroundColor,
                     body: Container(
-                      decoration: BoxDecoration(
-                        color: _backgroundColor,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.black, width: 2),
-                        image: const DecorationImage(
-                          image: AssetImage('assets/play_background.png'),
-                          opacity: 0.05,
-                        ),
-                      ),
                       child: Center(
                         child: FractionallySizedBox(
                           heightFactor: 0.8,
@@ -286,7 +266,7 @@ class _GameScreenState extends State<GameScreen>
             isLast5Seconds: timeLeft < 6,
           ),
         );
-        _changeBackgroundColor(Colors.blue);
+        _changeBackgroundColor(Colors.black);
       },
     );
   }
@@ -345,66 +325,21 @@ class _GameScreenState extends State<GameScreen>
       print('AccelerometerEvent z::: ${event.z}');
       print('AccelerometerEvent x - gravity::: ${event.x - gravity}');
       if ((event.x - gravity) > 1) {
-        startGame();
+        player.setAsset('assets/3-sec-countdown-sound.wav');
+        player.play();
+        _setContent(
+          ReadyTimer(
+            onReady: () {
+              HapticFeedback.vibrate();
+              _startTimerCountdown();
+              _tilt.startListening();
+              _cameraController.startVideoRecording();
+            },
+          ),
+        );
         _streamSubscription.cancel();
       }
     });
-  }
-
-  void startGame() {
-    startTimer();
-    player.setAsset('assets/3-sec-countdown-sound.wav');
-    player.play();
-    _setContent(
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: 164.6,
-            height: 164.6,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                CircularProgressIndicator(
-                  value: seconds / 3,
-                  valueColor: const AlwaysStoppedAnimation(Colors.white),
-                  backgroundColor: Colors.grey,
-                  color: Color(0x66008EB1),
-                  strokeWidth: 10,
-                ),
-                Center(
-                  child: Text(
-                    seconds.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 88.14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 28),
-          const Text(
-            'GET READY',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 24,
-            ),
-          )
-        ],
-      ),
-      // ReadyTimer(
-      //   onReady: () {
-      //     HapticFeedback.vibrate();
-      //     _startTimerCountdown();
-      //     _tilt.startListening();
-      //     _cameraController.startVideoRecording();
-      //   },
-      // ),
-    );
   }
 
   void _startTimerCountdown() {
